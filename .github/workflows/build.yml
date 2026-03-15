@@ -3,6 +3,7 @@ name: Build & Test
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
     branches: [main]
 
@@ -62,7 +63,7 @@ jobs:
     name: Create Release
     needs: [build-cli, build-app]
     runs-on: macos-14
-    if: github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'release:')
+    if: startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'release:'))
     steps:
       - uses: actions/checkout@v4
 
@@ -102,17 +103,23 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: DX Tools v${{ steps.version.outputs.version }}
+          make_latest: true
           body: |
             ## DX Tools v${{ steps.version.outputs.version }}
 
             ### Downloads
-            - **DX Tools.dmg** — macOS app (drag to Applications)
-            - **dx** — CLI binary (copy to ~/bin or /usr/local/bin)
+            - **DXTools.dmg** — macOS app (drag to Applications)
+            - **dx** — CLI binary (copy to `~/bin/` or `/usr/local/bin/`)
 
-            ### Install CLI via Homebrew
+            ### Install via Homebrew
             ```
-            brew install dx-tools
+            brew tap openstruct/tap && brew install dx-tools
             ```
+
+            ### What's Included
+            - 23 developer tools in one native macOS app
+            - CLI with 10 subcommands: json, jwt, epoch, env, hash, base64, uuid, color, pass, port
+            - 245 tests, zero dependencies, 2.3 MB
           files: |
             build/DXTools.dmg
             .build/release/dx
