@@ -10,6 +10,7 @@ struct DXToolsApp: App {
             ContentView()
                 .environment(appState)
                 .adaptiveTheme()
+                .preferredColorScheme(appState.appearanceOverride)
                 .onAppear {
                     appDelegate.appState = appState
                 }
@@ -74,6 +75,7 @@ struct DXToolsApp: App {
             SettingsView()
                 .environment(appState)
                 .adaptiveTheme()
+                .preferredColorScheme(appState.appearanceOverride)
         }
     }
 }

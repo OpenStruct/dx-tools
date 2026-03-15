@@ -37,10 +37,15 @@ struct SettingsView: View {
                 }
 
                 Section("Appearance") {
-                    Text("DX Tools follows your system appearance")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Text("Toggle Dark Mode in System Settings → Appearance")
-                        .font(.caption).foregroundStyle(.tertiary)
+                    Picker("Theme", selection: Binding(
+                        get: { appState.appearanceMode },
+                        set: { appState.setAppearance($0) }
+                    )) {
+                        Text("System").tag("system")
+                        Text("Dark").tag("dark")
+                        Text("Light").tag("light")
+                    }
+                    .pickerStyle(.segmented)
                 }
             }
             .formStyle(.grouped)

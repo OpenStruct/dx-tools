@@ -11,28 +11,22 @@ struct CodeEditor: NSViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
     func makeNSView(context: Context) -> NSScrollView {
-        let scrollView = NSScrollView()
-        scrollView.hasVerticalScroller = true
-        scrollView.hasHorizontalScroller = false
-        scrollView.autohidesScrollers = true
-        scrollView.borderType = .noBorder
-        scrollView.drawsBackground = false
-        scrollView.scrollerStyle = .overlay
+        // Use Apple's factory method — properly sets up the full text system
+        let scrollView = DXTextView.scrollableTextView()
+        guard let textView = scrollView.documentView as? NSTextView else { return scrollView }
 
-        let contentSize = scrollView.contentSize
+        // Replace with our subclass by swapping the text container
+        let dxTextView = DXTextView()
+        dxTextView.textStorage?.removeLayoutManager(dxTextView.layoutManager!)
+        textView.textContainer.map { dxTextView.replaceTextContainer($0) }
+        // Actually, we can't easily swap. Let's configure the existing textView instead.
+        // We'll use the standard NSTextView and override via the coordinator.
 
-        let textStorage = NSTextStorage()
-        let layoutManager = NSLayoutManager()
-        textStorage.addLayoutManager(layoutManager)
-
-        let textContainer = NSTextContainer(containerSize: NSSize(width: contentSize.width, height: CGFloat.greatestFiniteMagnitude))
-        textContainer.widthTracksTextView = true
-        layoutManager.addTextContainer(textContainer)
-
-        let textView = DXTextView(frame: NSRect(origin: .zero, size: contentSize), textContainer: textContainer)
         textView.isVerticallyResizable = true
         textView.isHorizontallyResizable = false
         textView.autoresizingMask = [.width]
+        textView.textContainer?.widthTracksTextView = true
+        textView.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
         textView.font = font
         textView.isEditable = isEditable
         textView.isSelectable = true
@@ -49,7 +43,12 @@ struct CodeEditor: NSViewRepresentable {
         textView.textContainerInset = NSSize(width: 8, height: 14)
         textView.delegate = context.coordinator
 
-        scrollView.documentView = textView
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true
+        scrollView.borderType = .noBorder
+        scrollView.drawsBackground = false
+        scrollView.scrollerStyle = .overlay
 
         // Line ruler
         let ruler = LineNumberRulerView(textView: textView)
@@ -77,7 +76,7 @@ struct CodeEditor: NSViewRepresentable {
     }
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
-        guard let textView = scrollView.documentView as? DXTextView else { return }
+        guard let textView = scrollView.documentView as? NSTextView else { return }
         let ruler = scrollView.verticalRulerView as? LineNumberRulerView
 
         textView.isEditable = isEditable
@@ -96,7 +95,7 @@ struct CodeEditor: NSViewRepresentable {
         }
     }
 
-    private func updateAppearance(_ textView: DXTextView, _ ruler: LineNumberRulerView?) {
+    private func updateAppearance(_ textView: NSTextView, _ ruler: LineNumberRulerView?) {
         let isDark = colorScheme == .dark
         textView.backgroundColor = isDark
             ? NSColor(red: 0.059, green: 0.059, blue: 0.075, alpha: 1.0)
@@ -132,7 +131,7 @@ struct CodeEditor: NSViewRepresentable {
 
     class Coordinator: NSObject, NSTextViewDelegate {
         var parent: CodeEditor
-        weak var textView: DXTextView?
+        weak var textView: NSTextView?
         weak var lineRuler: LineNumberRulerView?
         var isUpdating = false
         private var bracketHighlights: [NSRange] = []
@@ -150,12 +149,33 @@ struct CodeEditor: NSViewRepresentable {
             isUpdating = false
         }
 
+        // Handle tab key for 2-space indent
+        func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+            if commandSelector == #selector(NSResponder.insertTab(_:)) {
+                textView.insertText("  ", replacementRange: textView.selectedRange())
+                return true
+            }
+            if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+                let text = textView.string as NSString
+                let loc = textView.selectedRange().location
+                let lineRange = text.lineRange(for: NSRange(location: loc, length: 0))
+                let line = text.substring(with: lineRange)
+                let indent = String(line.prefix(while: { $0 == " " || $0 == "\t" }))
+                var extra = ""
+                if loc > 0 {
+                    let prev = text.character(at: loc - 1)
+                    if prev == 123 || prev == 91 { extra = "  " }
+                }
+                textView.insertText("\n\(indent)\(extra)", replacementRange: textView.selectedRange())
+                return true
+            }
+            return false
+        }
+
         @objc func selectionDidChange(_ notification: Notification) {
             guard let tv = textView else { return }
             highlightMatchingBracket(tv)
         }
-
-        // MARK: Bracket matching
 
         func highlightMatchingBracket(_ tv: NSTextView) {
             guard let storage = tv.textStorage else { return }
@@ -211,8 +231,6 @@ struct CodeEditor: NSViewRepresentable {
             storage.endEditing()
         }
 
-        // MARK: Syntax highlighting
-
         func applySyntaxHighlighting(_ textView: NSTextView) {
             let text = textView.string
             guard !text.isEmpty, let storage = textView.textStorage else { return }
@@ -246,35 +264,9 @@ struct CodeEditor: NSViewRepresentable {
     }
 }
 
-// MARK: - DXTextView
+// MARK: - DXTextView (only used for scrollableTextView factory)
 
 class DXTextView: NSTextView {
-    override func insertTab(_ sender: Any?) {
-        insertText("  ", replacementRange: selectedRange())
-    }
-
-    override func insertNewline(_ sender: Any?) {
-        let text = string as NSString
-        let lineRange = text.lineRange(for: NSRange(location: selectedRange().location, length: 0))
-        let line = text.substring(with: lineRange)
-        let indent = String(line.prefix(while: { $0 == " " || $0 == "\t" }))
-
-        var extra = ""
-        let cur = selectedRange().location
-        if cur > 0 {
-            let prev = text.character(at: cur - 1)
-            if prev == 123 || prev == 91 { extra = "  " } // { or [
-        }
-        insertText("\n\(indent)\(extra)", replacementRange: selectedRange())
-    }
-
-    // Accept first responder so typing works
-    override var acceptsFirstResponder: Bool { true }
-
-    override func becomeFirstResponder() -> Bool {
-        let result = super.becomeFirstResponder()
-        return result
-    }
 }
 
 // MARK: - Line Number Ruler
@@ -304,7 +296,6 @@ class LineNumberRulerView: NSRulerView {
         backgroundColor.setFill()
         rect.fill()
 
-        // Border
         let bc = isDark ? NSColor(white: 0.15, alpha: 1) : NSColor(white: 0.88, alpha: 1)
         bc.setStroke()
         let bp = NSBezierPath()
