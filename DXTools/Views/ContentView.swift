@@ -5,6 +5,7 @@ struct ContentView: View {
     @Environment(AppState.self) private var appState
     @Environment(\.theme) private var theme
     @State private var clipboardTimer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
+    @State private var showOnboarding = !UserDefaults.standard.bool(forKey: "dx.onboarded")
 
     var body: some View {
         @Bindable var state = appState
@@ -79,6 +80,16 @@ struct ContentView: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
 
+            // Onboarding
+            if showOnboarding {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+
+                OnboardingView(isPresented: $showOnboarding)
+                    .transition(.scale(scale: 0.95).combined(with: .opacity))
+            }
+
             // Shortcut overlay
             if appState.showShortcutOverlay {
                 Color.black.opacity(0.3)
@@ -90,6 +101,7 @@ struct ContentView: View {
                     .transition(.scale(scale: 0.95).combined(with: .opacity))
             }
         }
+        .animation(.spring(response: 0.3), value: showOnboarding)
         .animation(.spring(response: 0.25), value: appState.showCommandPalette)
         .animation(.spring(response: 0.25), value: appState.showShortcutOverlay)
         .animation(.spring(response: 0.3), value: appState.showClipboardPopup)

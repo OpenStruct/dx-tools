@@ -29,6 +29,11 @@ struct ToolRouter: View {
             case .urlCoder: URLCoderView()
             case .unixPermissions: UnixPermView()
             case .cronParser: CronView()
+            case .textDiff: TextDiffView()
+            case .sshKey: SSHKeyView()
+            case .docker: DockerView()
+            case .gitStats: GitView()
+            case .timestampConverter: TimestampView()
             }
         }
         .id(tool) // Force view recreation on tool switch

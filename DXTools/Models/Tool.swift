@@ -44,6 +44,11 @@ enum Tool: String, CaseIterable, Identifiable {
     case urlCoder = "URL Encoder"
     case unixPermissions = "Unix Permissions"
     case cronParser = "Cron Parser"
+    case textDiff = "Text Diff"
+    case sshKey = "SSH Key Generator"
+    case docker = "Docker"
+    case gitStats = "Git Stats"
+    case timestampConverter = "Timestamp Converter"
 
     var id: String { rawValue }
 
@@ -72,6 +77,11 @@ enum Tool: String, CaseIterable, Identifiable {
         case .urlCoder: return "link"
         case .unixPermissions: return "lock.shield"
         case .cronParser: return "clock.badge.checkmark"
+        case .textDiff: return "arrow.left.arrow.right.square"
+        case .sshKey: return "key.horizontal"
+        case .docker: return "shippingbox"
+        case .gitStats: return "arrow.triangle.branch"
+        case .timestampConverter: return "calendar.badge.clock"
         }
     }
 
@@ -83,7 +93,11 @@ enum Tool: String, CaseIterable, Identifiable {
         case .envManager, .curlToCode, .apiRequest, .portManager, .networkInfo: return .devops
         case .urlCoder: return .encoding
         case .unixPermissions, .cronParser: return .generators
-        case .regexTester, .markdownPreview, .loremGenerator: return .text
+        case .regexTester, .markdownPreview, .loremGenerator, .textDiff: return .text
+        case .sshKey: return .generators
+        case .docker: return .devops
+        case .gitStats: return .devops
+        case .timestampConverter: return .generators
         }
     }
 
@@ -99,7 +113,7 @@ enum Tool: String, CaseIterable, Identifiable {
         case .hashGenerator: return "⌘8"
         case .uuidGenerator: return "⌘9"
         case .colorConverter: return "⌘0"
-        default: return ""
+        default: return "" // Tools beyond ⌘0 have no shortcut
         }
     }
 
@@ -128,6 +142,11 @@ enum Tool: String, CaseIterable, Identifiable {
         case .urlCoder: return "url encode decode percent query parameter uri"
         case .unixPermissions: return "unix permission chmod rwx octal file directory"
         case .cronParser: return "cron schedule timer job interval expression"
+        case .textDiff: return "diff compare text difference changes"
+        case .sshKey: return "ssh key generate ed25519 rsa keypair"
+        case .docker: return "docker container ps start stop restart logs"
+        case .gitStats: return "git branch commit status repository"
+        case .timestampConverter: return "timestamp iso rfc epoch date time convert"
         }
     }
 }
