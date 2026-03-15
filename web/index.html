@@ -220,9 +220,9 @@ footer .f-links a{color:var(--text2)}
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-badge"><span class="pulse"></span><span id="hero-version">v2.0.0</span> — 23 tools, native macOS</div>
+  <div class="hero-badge"><span class="pulse"></span><span id="hero-version">v2.2.0</span> — 33 tools, native macOS</div>
   <h1><span class="gradient">DX</span><span class="thin"> Tools</span></h1>
-  <p class="hero-sub">23 developer tools in one native macOS app. JSON formatting, JWT decoding, port killing, DNS lookups, regex testing — all offline, instant, keyboard-first.</p>
+  <p class="hero-sub">33 developer tools in one native macOS app. JSON formatting, JWT decoding, port killing, QR codes, SQL formatting, API testing — all offline, instant, keyboard-first.</p>
   <div class="hero-actions">
     <a href="https://github.com/OpenStruct/dx-tools/releases/latest" class="btn-primary" id="dl-btn-main">⬇ Download DMG <span class="sm" id="dl-size">2.3 MB</span></a>
     <a href="#install" class="btn-secondary"><code>brew tap openstruct/tap && brew install dx-tools</code></a>
@@ -231,7 +231,7 @@ footer .f-links a{color:var(--text2)}
     <span class="tag"><span class="dot" style="background:var(--green)"></span> macOS 14+</span>
     <span class="tag"><span class="dot" style="background:var(--blue)"></span> Universal Binary</span>
     <span class="tag"><span class="dot" style="background:var(--yellow)"></span> Zero Dependencies</span>
-    <span class="tag"><span class="dot" style="background:var(--purple)"></span> 245 Tests</span>
+    <span class="tag"><span class="dot" style="background:var(--purple)"></span> 300 Tests</span>
   </div>
 </section>
 
@@ -299,16 +299,16 @@ footer .f-links a{color:var(--text2)}
 
 <!-- Stats -->
 <div class="stats">
-  <div class="stat"><div class="n">23</div><div class="l">Tools</div></div>
-  <div class="stat"><div class="n">245</div><div class="l">Tests</div></div>
-  <div class="stat"><div class="n">2.3</div><div class="l">MB</div></div>
+  <div class="stat"><div class="n">33</div><div class="l">Tools</div></div>
+  <div class="stat"><div class="n">300</div><div class="l">Tests</div></div>
+  <div class="stat"><div class="n">3.0</div><div class="l">MB</div></div>
   <div class="stat"><div class="n">0</div><div class="l">Dependencies</div></div>
-  <div class="stat"><div class="n">12K</div><div class="l">Lines</div></div>
+  <div class="stat"><div class="n">117</div><div class="l">Swift Files</div></div>
 </div>
 
 <!-- Tools -->
 <section class="tools" id="tools">
-  <div class="section-label"><span class="pill">23 Tools</span></div>
+  <div class="section-label"><span class="pill">33 Tools</span></div>
   <h2 class="section-title">Everything You Need</h2>
   <p class="section-sub">Stop switching between random websites. Every tool runs locally, instantly, with zero telemetry.</p>
 
@@ -316,24 +316,34 @@ footer .f-links a{color:var(--text2)}
     <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>📋</span></div><h3>JSON Formatter</h3></div><p>Format, minify, validate JSON. Syntax highlighting, bracket matching, line numbers. Configurable indent.</p><span class="card-tag">JSON</span></div>
     <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>🔄</span></div><h3>JSON → Go / Swift / TS</h3></div><p>Convert JSON to Go structs, Swift Codable models, and TypeScript interfaces. Handles nesting, arrays, optionals.</p><span class="card-tag">JSON</span></div>
     <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>⚖️</span></div><h3>JSON Diff</h3></div><p>Side-by-side structural diff. Highlights added, removed, and changed keys with path tracking.</p><span class="card-tag">JSON</span></div>
+    <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>✅</span></div><h3>JSON Schema Validator</h3></div><p>Validate JSON against a schema. Type checking, required fields, min/max, pattern, array validation.</p><span class="card-tag">JSON</span></div>
     <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🔑</span></div><h3>JWT Decoder</h3></div><p>Decode JWT tokens. Inspect header, payload, claims. Check expiration status with countdown.</p><span class="card-tag">Encoding</span></div>
     <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🔐</span></div><h3>Base64 Encode/Decode</h3></div><p>Standard and URL-safe base64. Auto-padding. Handles binary data detection.</p><span class="card-tag">Encoding</span></div>
     <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>#️⃣</span></div><h3>Hash Generator</h3></div><p>MD5, SHA-1, SHA-256, SHA-512 in one view. Hash text or drag & drop files.</p><span class="card-tag">Encoding</span></div>
     <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🔗</span></div><h3>URL Encoder/Decoder</h3></div><p>Percent-encode/decode URLs. Parse into components — scheme, host, path, query params, fragment.</p><span class="card-tag">Encoding</span></div>
+    <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🖼</span></div><h3>Image Base64</h3></div><p>Encode images to base64 / data URI. Decode base64 back to image. PNG & JPEG support.</p><span class="card-tag">Encoding</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🎲</span></div><h3>UUID Generator</h3></div><p>Generate v4 UUIDs. Bulk generation, uppercase/lowercase, one-click copy.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🎨</span></div><h3>Color Converter</h3></div><p>HEX ↔ RGB ↔ HSL. Code generation for Swift, CSS, Flutter, Android, Tailwind. Shade palette.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>⏱</span></div><h3>Epoch Converter</h3></div><p>Unix timestamp ↔ human date. Auto-detects seconds vs milliseconds. 8 world clocks.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🔒</span></div><h3>Password Generator</h3></div><p>Cryptographically secure. Passwords & passphrases. Strength meter. Character-colored output.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🛡</span></div><h3>Unix Permissions</h3></div><p>chmod calculator. Numeric ↔ symbolic. Interactive checkboxes. Setuid/setgid/sticky bit.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>⏰</span></div><h3>Cron Parser</h3></div><p>Human-readable descriptions. Next 10 run times. Field breakdown. Click-to-try examples.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>📱</span></div><h3>QR Code Generator</h3></div><p>Generate QR codes from text or URLs. 4 error correction levels. Copy or save as PNG.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🔑</span></div><h3>SSH Key Generator</h3></div><p>Generate RSA, Ed25519, ECDSA keys. Custom comments. Copy or export public/private keys.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🕐</span></div><h3>Timestamp Converter</h3></div><p>Unix ↔ ISO 8601 ↔ RFC 2822. Timezone support. Batch conversion.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🔌</span></div><h3>Port Manager</h3></div><p>See every listening port. Kill processes instantly. Common dev port monitoring. Search & sort.</p><span class="card-tag">DevOps</span></div>
     <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🌐</span></div><h3>Network Info & DNS</h3></div><p>Local/public IP, interfaces, DNS servers. Full DNS lookup — A, AAAA, CNAME, MX, NS, TXT records.</p><span class="card-tag">DevOps</span></div>
-    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📡</span></div><h3>API Request Builder</h3></div><p>Build & send HTTP requests. Headers, body, auth. Response viewer with timing. Mini Postman.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📡</span></div><h3>API Request Builder</h3></div><p>Build & send HTTP requests. Headers, query params, body. Response viewer with timing. Mini Postman.</p><span class="card-tag">DevOps</span></div>
     <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📋</span></div><h3>Env Manager</h3></div><p>Parse .env files. Sensitive value masking. Diff two envs. Validate against templates.</p><span class="card-tag">DevOps</span></div>
     <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>💻</span></div><h3>cURL → Code</h3></div><p>Paste cURL, get Swift, Go, Python, JavaScript, or Ruby. Parses headers, body, method.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🐳</span></div><h3>Docker Manager</h3></div><p>List containers, start/stop/remove. Image management. Quick status overview.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📊</span></div><h3>Git Stats</h3></div><p>Repository stats, branch info, recent commits. Quick repo health check.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📶</span></div><h3>HTTP Status Codes</h3></div><p>Searchable reference of 35+ HTTP status codes. Color-coded categories with detail panel.</p><span class="card-tag">DevOps</span></div>
     <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>✏️</span></div><h3>Regex Tester</h3></div><p>Live regex testing. Match highlighting, capture groups, replace mode. Flag toggles.</p><span class="card-tag">Text</span></div>
     <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>📝</span></div><h3>Markdown Preview</h3></div><p>Live markdown rendering. Side-by-side editor and preview.</p><span class="card-tag">Text</span></div>
     <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>📄</span></div><h3>Lorem Generator</h3></div><p>Words, sentences, paragraphs. Fake names, emails, phones, addresses. JSON with realistic data.</p><span class="card-tag">Text</span></div>
+    <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>🔀</span></div><h3>Text Diff</h3></div><p>LCS-based diff with unified output. Side-by-side view. Stats bar with additions & deletions.</p><span class="card-tag">Text</span></div>
+    <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>🗃</span></div><h3>SQL Formatter</h3></div><p>Format & minify SQL queries. 3 indent styles. Handles JOINs, subqueries, CTEs.</p><span class="card-tag">Text</span></div>
   </div>
 </section>
 
@@ -386,25 +396,52 @@ footer .f-links a{color:var(--text2)}
   <div class="changelog-timeline">
     <div class="cl-entry latest">
       <div class="cl-version">
-        <span class="v">v2.0.0</span>
+        <span class="v">v2.2.0</span>
         <span class="badge-new">Latest</span>
         <span class="date">March 15, 2026</span>
       </div>
       <ul class="cl-list">
+        <li><span class="cl-icon cl-fix">●</span> API Request Builder — params now correctly applied to requests</li>
+        <li><span class="cl-icon cl-improve">◆</span> Port Manager — redesigned kill buttons with outline style, hover reveal</li>
+        <li><span class="cl-icon cl-improve">◆</span> QR Code — shorter correction level picker (L/M/Q/H segments)</li>
+        <li><span class="cl-icon cl-improve">◆</span> All 33 tools use single clean ToolHeader — no more double headers</li>
+        <li><span class="cl-icon cl-fix">●</span> 300 tests, 0 failures across 25 test suites</li>
+      </ul>
+    </div>
+
+    <div class="cl-entry">
+      <div class="cl-version">
+        <span class="v">v2.1.0</span>
+        <span class="date">March 15, 2026</span>
+      </div>
+      <ul class="cl-list">
+        <li><span class="cl-icon cl-new">✦</span> QR Code Generator — 4 error correction levels, copy/save PNG</li>
+        <li><span class="cl-icon cl-new">✦</span> Image Base64 — encode images to base64/data URI, decode back</li>
+        <li><span class="cl-icon cl-new">✦</span> SQL Formatter — format & minify SQL, 3 indent styles</li>
+        <li><span class="cl-icon cl-new">✦</span> JSON Schema Validator — type, required, min/max, pattern, arrays</li>
+        <li><span class="cl-icon cl-new">✦</span> HTTP Status Codes — searchable reference, color-coded categories</li>
+        <li><span class="cl-icon cl-new">✦</span> Input syntax highlighting — live JSON/SQL coloring in editor</li>
+        <li><span class="cl-icon cl-new">✦</span> History panel — browse & restore past inputs per tool</li>
+        <li><span class="cl-icon cl-new">✦</span> URL handler — <code>dx://tool-name</code> opens app to specific tool</li>
+        <li><span class="cl-icon cl-new">✦</span> Auto-update checker — checks GitHub Releases on launch</li>
+        <li><span class="cl-icon cl-improve">◆</span> Custom app icon — orange "DX" monogram on dark background</li>
+        <li><span class="cl-icon cl-improve">◆</span> Settings view with font size, indent style, theme toggle</li>
+        <li><span class="cl-icon cl-improve">◆</span> Onboarding — 3-screen first-launch walkthrough</li>
+        <li><span class="cl-icon cl-improve">◆</span> Command Palette — ⌘K overlay with fuzzy search</li>
+      </ul>
+    </div>
+
+    <div class="cl-entry">
+      <div class="cl-version">
+        <span class="v">v2.0.0</span>
+        <span class="date">March 15, 2026</span>
+      </div>
+      <ul class="cl-list">
         <li><span class="cl-icon cl-new">✦</span> 23 developer tools in one native macOS app</li>
-        <li><span class="cl-icon cl-new">✦</span> Port Manager — list, kill, monitor listening ports</li>
-        <li><span class="cl-icon cl-new">✦</span> Network Info — local/public IP, DNS lookup with full record types</li>
-        <li><span class="cl-icon cl-new">✦</span> URL Encoder/Decoder with component parsing</li>
-        <li><span class="cl-icon cl-new">✦</span> Unix Permissions Calculator — numeric ↔ symbolic chmod</li>
-        <li><span class="cl-icon cl-new">✦</span> Cron Parser — human descriptions, next 10 run times</li>
-        <li><span class="cl-icon cl-new">✦</span> API Request Builder — mini Postman, send HTTP requests</li>
-        <li><span class="cl-icon cl-new">✦</span> Smart clipboard auto-detection (JWT, JSON, cURL, colors)</li>
-        <li><span class="cl-icon cl-new">✦</span> Menu bar quick actions — UUID, Epoch, Password</li>
-        <li><span class="cl-icon cl-new">✦</span> CLI companion — 10 subcommands, pipe-friendly</li>
-        <li><span class="cl-icon cl-improve">◆</span> Pro code editor: line numbers, bracket matching, syntax highlighting</li>
-        <li><span class="cl-icon cl-improve">◆</span> Custom theme system with dark/light mode</li>
-        <li><span class="cl-icon cl-improve">◆</span> Favorites system with sidebar pinning</li>
-        <li><span class="cl-icon cl-fix">●</span> 245 tests across 17 test suites</li>
+        <li><span class="cl-icon cl-new">✦</span> Port Manager, Network Info, URL Encoder, Unix Permissions, Cron Parser</li>
+        <li><span class="cl-icon cl-new">✦</span> SSH Key Generator, Docker Manager, Git Stats, Timestamp Converter, Text Diff</li>
+        <li><span class="cl-icon cl-new">✦</span> API Request Builder, smart clipboard, menu bar, CLI companion</li>
+        <li><span class="cl-icon cl-improve">◆</span> Pro code editor, dark/light theme, favorites system</li>
       </ul>
     </div>
 
@@ -511,7 +548,7 @@ footer .f-links a{color:var(--text2)}
 <footer>
   <div class="f-logo">DX<span> Tools</span></div>
   <p>Built with SwiftUI by <a href="https://github.com/OpenStruct">OpenStruct</a>. No telemetry. No accounts. No Electron.</p>
-  <p style="color:var(--text3);font-size:11px;margin-top:4px">macOS 14+ · Swift 5.9 · 12,485 lines of code</p>
+  <p style="color:var(--text3);font-size:11px;margin-top:4px">macOS 14+ · Swift 5.9 · 117 Swift files · 33 tools · 300 tests</p>
   <div class="f-links">
     <a href="https://github.com/OpenStruct/dx-tools">GitHub</a>
     <a href="https://github.com/OpenStruct/dx-tools/releases">Releases</a>
