@@ -1,0 +1,37 @@
+name: Update Homebrew Tap
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-tap:
+    name: Update Homebrew Formula
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get release info
+        id: release
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Download tarball and compute SHA256
+          TARBALL_URL="https://github.com/OpenStruct/dx-tools/archive/refs/tags/${GITHUB_REF_NAME}.tar.gz"
+          SHA=$(curl -sL "$TARBALL_URL" | shasum -a 256 | cut -d' ' -f1)
+          echo "sha256=$SHA" >> $GITHUB_OUTPUT
+          echo "url=$TARBALL_URL" >> $GITHUB_OUTPUT
+
+      - name: Update formula in tap repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.TAP_GITHUB_TOKEN }}
+          repository: OpenStruct/homebrew-tap
+          event-type: update-formula
+          client-payload: |
+            {
+              "version": "${{ steps.release.outputs.version }}",
+              "sha256": "${{ steps.release.outputs.sha256 }}",
+              "url": "${{ steps.release.outputs.url }}"
+            }

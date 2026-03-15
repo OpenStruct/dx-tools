@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DX Tools — Developer Experience Toolkit for macOS</title>
 <meta name="description" content="23 developer tools in one native macOS app. JSON, JWT, ports, DNS, regex, colors, hashing — all offline, instant, keyboard-first.">
+<meta property="og:title" content="DX Tools — Developer Toolkit for macOS">
+<meta property="og:description" content="23 developer tools in one native macOS app. Zero dependencies, 2.3MB, keyboard-first.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://openstruct.github.io/dx-tools/">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -108,7 +112,7 @@ nav .dl-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--glow2);
 .tool-card .card-tag{display:inline-block;padding:3px 9px;background:rgba(255,140,66,.06);border:1px solid rgba(255,140,66,.1);border-radius:4px;font-size:9px;font-weight:800;color:var(--accent);margin-top:12px;text-transform:uppercase;letter-spacing:.8px}
 
 /* Category colors */
-.cat-json .card-icon{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.15)}.cat-json .card-icon span{filter:hue-rotate(0deg)}
+.cat-json .card-icon{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.15)}
 .cat-encoding .card-icon{background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.15)}
 .cat-gen .card-icon{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.15)}
 .cat-devops .card-icon{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.15)}
@@ -117,10 +121,42 @@ nav .dl-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--glow2);
 /* ── Features ── */
 .features{max-width:1100px;margin:0 auto;padding:100px 24px}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.feat-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+.feat-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center;transition:all .25s}
+.feat-card:hover{border-color:var(--border2);transform:translateY(-2px)}
 .feat-card .feat-icon{font-size:32px;margin-bottom:16px}
 .feat-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
 .feat-card p{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── Changelog ── */
+.changelog{max-width:800px;margin:0 auto;padding:100px 24px}
+.changelog-timeline{position:relative;padding-left:32px}
+.changelog-timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),transparent)}
+.cl-entry{position:relative;margin-bottom:40px}
+.cl-entry::before{content:'';position:absolute;left:-28px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--glow)}
+.cl-entry.latest::before{animation:pulse-dot 2s ease-in-out infinite;background:var(--green)}
+.cl-version{display:inline-flex;align-items:center;gap:10px;margin-bottom:8px}
+.cl-version .v{font-size:20px;font-weight:900;letter-spacing:-.5px}
+.cl-version .date{font-size:12px;color:var(--text3);font-weight:500}
+.cl-version .badge-new{padding:3px 10px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);border-radius:12px;font-size:10px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.5px}
+.cl-list{list-style:none;padding:0}
+.cl-list li{padding:6px 0;font-size:14px;color:var(--text2);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.cl-list .cl-icon{font-size:12px;flex-shrink:0;margin-top:3px}
+.cl-list .cl-new{color:var(--green)}.cl-list .cl-fix{color:var(--blue)}.cl-list .cl-improve{color:var(--yellow)}
+
+/* ── Install ── */
+.install{max-width:900px;margin:0 auto;padding:100px 24px}
+.install-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.install-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center;transition:all .25s}
+.install-card:hover{border-color:var(--accent);box-shadow:0 0 24px var(--glow)}
+.install-card .inst-icon{font-size:36px;margin-bottom:16px}
+.install-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.install-card p{font-size:13px;color:var(--text3);margin-bottom:16px}
+.install-card .inst-cmd{display:inline-block;padding:10px 20px;background:var(--bg);border:1px solid var(--border2);border-radius:10px;font-family:'SF Mono','JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:600;cursor:pointer;transition:all .2s;position:relative}
+.install-card .inst-cmd:hover{background:var(--surface2);border-color:var(--accent)}
+.install-card .inst-cmd .copy-hint{position:absolute;top:-8px;right:-8px;background:var(--accent);color:#fff;font-size:8px;font-weight:800;padding:2px 6px;border-radius:4px;font-family:-apple-system,sans-serif;opacity:0;transition:opacity .2s}
+.install-card .inst-cmd:hover .copy-hint{opacity:1}
+.install-card .dl-link{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:14px;border-radius:10px;box-shadow:0 4px 16px var(--glow);transition:all .2s}
+.install-card .dl-link:hover{transform:translateY(-1px);box-shadow:0 8px 28px var(--glow2);opacity:1}
 
 /* ── CLI ── */
 .cli{max-width:900px;margin:0 auto;padding:100px 24px}
@@ -151,12 +187,17 @@ footer p{font-size:13px;color:var(--text3);margin-top:4px}
 footer .f-links{display:flex;gap:20px;justify-content:center;margin-top:16px;font-size:13px}
 footer .f-links a{color:var(--text2)}
 
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--green);z-index:200;transition:transform .3s ease;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
 /* ── Responsive ── */
 @media(max-width:768px){
   nav{padding:12px 16px}nav .links{display:none}
   .stats{flex-wrap:wrap;gap:28px;padding:48px 24px}
   .tool-grid{grid-template-columns:1fr}
   .feat-grid{grid-template-columns:1fr}
+  .install-grid{grid-template-columns:1fr}
   .ss-sidebar{display:none}
   .hero h1{letter-spacing:-1.5px}
 }
@@ -170,19 +211,21 @@ footer .f-links a{color:var(--text2)}
   <div class="links">
     <a href="#tools">Tools</a>
     <a href="#features">Features</a>
+    <a href="#changelog">Changelog</a>
     <a href="#cli">CLI</a>
-    <a href="#" class="dl-btn">Download</a>
+    <a href="https://github.com/OpenStruct/dx-tools" target="_blank">GitHub</a>
+    <a href="https://github.com/OpenStruct/dx-tools/releases/latest" class="dl-btn">⬇ Download</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-badge"><span class="pulse"></span>v2.0 — 23 tools, native macOS</div>
+  <div class="hero-badge"><span class="pulse"></span><span id="hero-version">v2.0.0</span> — 23 tools, native macOS</div>
   <h1><span class="gradient">DX</span><span class="thin"> Tools</span></h1>
   <p class="hero-sub">23 developer tools in one native macOS app. JSON formatting, JWT decoding, port killing, DNS lookups, regex testing — all offline, instant, keyboard-first.</p>
   <div class="hero-actions">
-    <a href="#" class="btn-primary">⬇ Download DMG <span class="sm">2.4 MB</span></a>
-    <a href="#" class="btn-secondary"><code>brew install dx-tools</code></a>
+    <a href="https://github.com/OpenStruct/dx-tools/releases/latest" class="btn-primary" id="dl-btn-main">⬇ Download DMG <span class="sm" id="dl-size">2.3 MB</span></a>
+    <a href="#install" class="btn-secondary"><code>brew tap openstruct/tap && brew install dx-tools</code></a>
   </div>
   <div class="hero-meta">
     <span class="tag"><span class="dot" style="background:var(--green)"></span> macOS 14+</span>
@@ -258,7 +301,7 @@ footer .f-links a{color:var(--text2)}
 <div class="stats">
   <div class="stat"><div class="n">23</div><div class="l">Tools</div></div>
   <div class="stat"><div class="n">245</div><div class="l">Tests</div></div>
-  <div class="stat"><div class="n">2.4</div><div class="l">MB</div></div>
+  <div class="stat"><div class="n">2.3</div><div class="l">MB</div></div>
   <div class="stat"><div class="n">0</div><div class="l">Dependencies</div></div>
   <div class="stat"><div class="n">12K</div><div class="l">Lines</div></div>
 </div>
@@ -334,6 +377,78 @@ footer .f-links a{color:var(--text2)}
   </div>
 </section>
 
+<!-- Changelog -->
+<section class="changelog" id="changelog">
+  <div class="section-label"><span class="pill">Updates</span></div>
+  <h2 class="section-title">What's New</h2>
+  <p class="section-sub">Every release, every fix, every improvement.</p>
+
+  <div class="changelog-timeline">
+    <div class="cl-entry latest">
+      <div class="cl-version">
+        <span class="v">v2.0.0</span>
+        <span class="badge-new">Latest</span>
+        <span class="date">March 15, 2026</span>
+      </div>
+      <ul class="cl-list">
+        <li><span class="cl-icon cl-new">✦</span> 23 developer tools in one native macOS app</li>
+        <li><span class="cl-icon cl-new">✦</span> Port Manager — list, kill, monitor listening ports</li>
+        <li><span class="cl-icon cl-new">✦</span> Network Info — local/public IP, DNS lookup with full record types</li>
+        <li><span class="cl-icon cl-new">✦</span> URL Encoder/Decoder with component parsing</li>
+        <li><span class="cl-icon cl-new">✦</span> Unix Permissions Calculator — numeric ↔ symbolic chmod</li>
+        <li><span class="cl-icon cl-new">✦</span> Cron Parser — human descriptions, next 10 run times</li>
+        <li><span class="cl-icon cl-new">✦</span> API Request Builder — mini Postman, send HTTP requests</li>
+        <li><span class="cl-icon cl-new">✦</span> Smart clipboard auto-detection (JWT, JSON, cURL, colors)</li>
+        <li><span class="cl-icon cl-new">✦</span> Menu bar quick actions — UUID, Epoch, Password</li>
+        <li><span class="cl-icon cl-new">✦</span> CLI companion — 10 subcommands, pipe-friendly</li>
+        <li><span class="cl-icon cl-improve">◆</span> Pro code editor: line numbers, bracket matching, syntax highlighting</li>
+        <li><span class="cl-icon cl-improve">◆</span> Custom theme system with dark/light mode</li>
+        <li><span class="cl-icon cl-improve">◆</span> Favorites system with sidebar pinning</li>
+        <li><span class="cl-icon cl-fix">●</span> 245 tests across 17 test suites</li>
+      </ul>
+    </div>
+
+    <div class="cl-entry">
+      <div class="cl-version">
+        <span class="v">v1.0.0</span>
+        <span class="date">Initial Release</span>
+      </div>
+      <ul class="cl-list">
+        <li><span class="cl-icon cl-new">✦</span> JSON Formatter, JSON → Go/Swift/TypeScript, JSON Diff</li>
+        <li><span class="cl-icon cl-new">✦</span> JWT Decoder, Base64, Hash Generator</li>
+        <li><span class="cl-icon cl-new">✦</span> UUID Generator, Color Converter, Epoch Converter</li>
+        <li><span class="cl-icon cl-new">✦</span> Password Generator, Env Manager</li>
+        <li><span class="cl-icon cl-new">✦</span> cURL → Code, Regex Tester, Markdown Preview, Lorem Generator</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Install -->
+<section class="install" id="install">
+  <div class="section-label"><span class="pill">Install</span></div>
+  <h2 class="section-title">Get Started</h2>
+  <p class="section-sub">Two ways to install. Both take seconds.</p>
+
+  <div class="install-grid">
+    <div class="install-card">
+      <div class="inst-icon">🍺</div>
+      <h3>Homebrew</h3>
+      <p>CLI + keeps updated automatically</p>
+      <div class="inst-cmd" onclick="copyCmd(this, 'brew tap openstruct/tap && brew install dx-tools')">
+        brew tap openstruct/tap && brew install dx-tools
+        <span class="copy-hint">Click to copy</span>
+      </div>
+    </div>
+    <div class="install-card">
+      <div class="inst-icon">💾</div>
+      <h3>Direct Download</h3>
+      <p>DMG installer, drag to Applications</p>
+      <a href="https://github.com/OpenStruct/dx-tools/releases/latest" class="dl-link">⬇ Download DMG</a>
+    </div>
+  </div>
+</section>
+
 <!-- CLI -->
 <section class="cli" id="cli">
   <div class="section-label"><span class="pill">CLI</span></div>
@@ -368,7 +483,7 @@ footer .f-links a{color:var(--text2)}
       <div><span class="prompt">❯</span> <span class="cmd">echo '{"a":1}' | dx base64 encode</span></div>
       <div class="hl">eyJhIjoxfQ==</div>
       <br>
-      <div><span class="prompt">❯</span> <span class="cmd">dx uuid -n 3</span></div>
+      <div><span class="prompt">❯</span> <span class="cmd">dx uuid --count 3</span></div>
       <div class="out">550e8400-e29b-41d4-a716-446655440000</div>
       <div class="out">6ba7b810-9dad-11d1-80b4-00c04fd430c8</div>
       <div class="out">f47ac10b-58cc-4372-a567-0e02b2c3d479</div>
@@ -395,15 +510,50 @@ footer .f-links a{color:var(--text2)}
 <!-- Footer -->
 <footer>
   <div class="f-logo">DX<span> Tools</span></div>
-  <p>Built with SwiftUI. No telemetry. No accounts. No Electron. Just tools.</p>
+  <p>Built with SwiftUI by <a href="https://github.com/OpenStruct">OpenStruct</a>. No telemetry. No accounts. No Electron.</p>
   <p style="color:var(--text3);font-size:11px;margin-top:4px">macOS 14+ · Swift 5.9 · 12,485 lines of code</p>
   <div class="f-links">
-    <a href="#">GitHub</a>
-    <a href="#">Changelog</a>
-    <a href="#">License (MIT)</a>
+    <a href="https://github.com/OpenStruct/dx-tools">GitHub</a>
+    <a href="https://github.com/OpenStruct/dx-tools/releases">Releases</a>
+    <a href="https://github.com/OpenStruct/dx-tools/blob/main/LICENSE">License (MIT)</a>
   </div>
 </footer>
 
+<!-- Toast -->
+<div class="toast" id="toast">✓ Copied to clipboard</div>
+
+<script>
+// Copy command to clipboard
+function copyCmd(el, cmd) {
+  navigator.clipboard.writeText(cmd);
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// Fetch latest release info from GitHub API
+async function fetchRelease() {
+  try {
+    const res = await fetch('https://api.github.com/repos/OpenStruct/dx-tools/releases/latest');
+    if (!res.ok) return;
+    const data = await res.json();
+
+    // Update version badge
+    const ver = document.getElementById('hero-version');
+    if (ver && data.tag_name) ver.textContent = data.tag_name;
+
+    // Update download link to DMG asset
+    const dmg = data.assets?.find(a => a.name.endsWith('.dmg'));
+    if (dmg) {
+      const btn = document.getElementById('dl-btn-main');
+      if (btn) btn.href = dmg.browser_download_url;
+
+      const size = document.getElementById('dl-size');
+      if (size) size.textContent = (dmg.size / 1024 / 1024).toFixed(1) + ' MB';
+    }
+  } catch (e) { /* silently fail, defaults work */ }
+}
+fetchRelease();
+</script>
 </body>
 </html>
-<!-- deployed 2026-03-15T13:37:53Z -->

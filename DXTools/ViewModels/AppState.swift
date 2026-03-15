@@ -22,6 +22,33 @@ class AppState {
     var fontSize: Double = 13
     var defaultIndent: JSONFormatterService.IndentStyle = .twoSpaces
 
+    // Appearance: nil = system, .dark, .light
+    var appearanceOverride: ColorScheme? = {
+        let raw = UserDefaults.standard.string(forKey: "dx.appearance") ?? "system"
+        switch raw {
+        case "dark": return .dark
+        case "light": return .light
+        default: return nil
+        }
+    }()
+
+    func setAppearance(_ mode: String) {
+        UserDefaults.standard.set(mode, forKey: "dx.appearance")
+        switch mode {
+        case "dark": appearanceOverride = .dark
+        case "light": appearanceOverride = .light
+        default: appearanceOverride = nil
+        }
+    }
+
+    var appearanceMode: String {
+        switch appearanceOverride {
+        case .dark: return "dark"
+        case .light: return "light"
+        default: return "system"
+        }
+    }
+
     // Favorites
     var favorites: Set<String> {
         get { Set(UserDefaults.standard.stringArray(forKey: "dx.favorites") ?? []) }

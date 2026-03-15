@@ -1,6 +1,6 @@
 name: DXTools
 options:
-  bundleIdPrefix: com.cradx
+  bundleIdPrefix: com.openstruct
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "15.0"
@@ -23,7 +23,7 @@ targets:
       - target: DXTools
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.cradx.dxtools.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.openstruct.dxtools.tests
         GENERATE_INFOPLIST_FILE: YES
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/DX Tools.app/Contents/MacOS/DX Tools"
         BUNDLE_LOADER: "$(TEST_HOST)"
@@ -39,7 +39,7 @@ targets:
       - path: DXTools/Assets.xcassets
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.cradx.dxtools
+        PRODUCT_BUNDLE_IDENTIFIER: com.openstruct.dxtools
         INFOPLIST_FILE: DXTools/Info.plist
         CODE_SIGN_STYLE: Automatic
         PRODUCT_NAME: "DX Tools"

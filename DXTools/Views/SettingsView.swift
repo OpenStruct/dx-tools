@@ -37,10 +37,15 @@ struct SettingsView: View {
                 }
 
                 Section("Appearance") {
-                    Text("DX Tools follows your system appearance")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Text("Toggle Dark Mode in System Settings → Appearance")
-                        .font(.caption).foregroundStyle(.tertiary)
+                    Picker("Theme", selection: Binding(
+                        get: { appState.appearanceMode },
+                        set: { appState.setAppearance($0) }
+                    )) {
+                        Text("System").tag("system")
+                        Text("Dark").tag("dark")
+                        Text("Light").tag("light")
+                    }
+                    .pickerStyle(.segmented)
                 }
             }
             .formStyle(.grouped)
@@ -57,7 +62,7 @@ struct SettingsView: View {
                 Text("Version 2.0.0").font(.caption).foregroundStyle(.tertiary)
                 Divider().frame(width: 200)
                 Text("\(Tool.allCases.count) tools · Built with SwiftUI").font(.caption).foregroundStyle(.tertiary)
-                Text("© 2024 cradx").font(.caption2).foregroundStyle(.quaternary)
+                Text("© 2024 OpenStruct").font(.caption2).foregroundStyle(.quaternary)
                 Spacer()
             }
             .frame(maxWidth: .infinity)
