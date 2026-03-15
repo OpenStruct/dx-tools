@@ -9,6 +9,7 @@ struct JSONToGoView: View {
             output: $vm.output,
             inputLanguage: "json",
             outputLanguage: "go",
+            toolId: "jsonToGo",
             inputHeader: {
                 EditorPaneHeader(title: "JSON Input", icon: "curlybraces") {
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.loadSample() }

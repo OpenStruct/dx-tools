@@ -9,6 +9,7 @@ struct Base64View: View {
             output: $vm.output,
             inputLanguage: "text",
             outputLanguage: "text",
+            toolId: "base64",
             inputHeader: {
                 EditorPaneHeader(title: vm.isEncoding ? "Plain Text" : "Base64 Input", icon: "arrow.down.doc") {
                     SmallIconButton(title: "Swap", icon: "arrow.triangle.2.circlepath") { vm.swap() }

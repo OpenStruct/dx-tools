@@ -9,6 +9,7 @@ struct JSONToTypeScriptView: View {
             output: $vm.output,
             inputLanguage: "json",
             outputLanguage: "typescript",
+            toolId: "jsonToTypeScript",
             inputHeader: {
                 EditorPaneHeader(title: "JSON Input", icon: "curlybraces") {
                     SmallIconButton(title: "Paste", icon: "doc.on.clipboard") { vm.pasteAndConvert() }

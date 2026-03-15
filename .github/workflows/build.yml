@@ -52,13 +52,12 @@ jobs:
             build
 
       - name: Run Tests
-        env:
-          CI: "true"
         run: |
           xcodebuild -project DXTools.xcodeproj \
             -scheme DXToolsTests \
             -configuration Debug \
             -derivedDataPath build/DerivedData \
+            CI_ENVIRONMENT=YES \
             test
 
   release:
