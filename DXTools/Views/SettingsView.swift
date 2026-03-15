@@ -57,7 +57,7 @@ struct SettingsView: View {
                 Text("Version 2.0.0").font(.caption).foregroundStyle(.tertiary)
                 Divider().frame(width: 200)
                 Text("\(Tool.allCases.count) tools · Built with SwiftUI").font(.caption).foregroundStyle(.tertiary)
-                Text("© 2024 cradx").font(.caption2).foregroundStyle(.quaternary)
+                Text("© 2024 OpenStruct").font(.caption2).foregroundStyle(.quaternary)
                 Spacer()
             }
             .frame(maxWidth: .infinity)

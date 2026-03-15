@@ -1,7 +1,7 @@
 class DxTools < Formula
   desc "⚡ Developer Experience Toolkit - 17 tools in one native macOS app"
-  homepage "https://github.com/cradx/dx-tools"
-  url "https://github.com/cradx/dx-tools/archive/refs/tags/v2.0.0.tar.gz"
+  homepage "https://github.com/OpenStruct/dx-tools"
+  url "https://github.com/OpenStruct/dx-tools/archive/refs/tags/v2.0.0.tar.gz"
   sha256 "PLACEHOLDER"
   license "MIT"
 
