@@ -52,6 +52,8 @@ jobs:
             build
 
       - name: Run Tests
+        env:
+          CI: "true"
         run: |
           xcodebuild -project DXTools.xcodeproj \
             -scheme DXToolsTests \

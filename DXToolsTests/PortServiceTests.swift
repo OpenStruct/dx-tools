@@ -238,7 +238,8 @@ final class PortServiceTests: XCTestCase {
 
     // MARK: - Live integration tests
 
-    func testListPortsReturnsResults() {
+    func testListPortsReturnsResults() throws {
+        try XCTSkipIf(ProcessInfo.processInfo.environment["CI"] != nil, "Skipped in CI — no lsof access")
         // This machine has ports open (we confirmed with lsof)
         let result = PortService.listPorts()
         XCTAssertFalse(result.isEmpty, "Should find at least some listening ports on this machine")
@@ -253,7 +254,8 @@ final class PortServiceTests: XCTestCase {
         }
     }
 
-    func testListPortsSortedByPort() {
+    func testListPortsSortedByPort() throws {
+        try XCTSkipIf(ProcessInfo.processInfo.environment["CI"] != nil, "Skipped in CI — no lsof access")
         let result = PortService.listPorts()
         for i in 1..<result.count {
             XCTAssertLessThanOrEqual(result[i-1].port, result[i].port)
