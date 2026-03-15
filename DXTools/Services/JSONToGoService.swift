@@ -35,11 +35,18 @@ struct JSONToGoService {
 
             for key in dict.keys.sorted() {
                 let val = dict[key]!
-                let fieldType = inferType(val, name: key, structs: &structs, options: options)
+                let isNull = val is NSNull
+                var fieldType = inferType(val, name: key, structs: &structs, options: options)
+                if isNull && options.usePointers {
+                    fieldType = "*string"
+                } else if isNull {
+                    fieldType = "interface{}"
+                }
                 fields.append(GoField(
                     jsonKey: key,
                     goName: goFieldName(key),
-                    goType: fieldType
+                    goType: fieldType,
+                    nullable: isNull
                 ))
             }
 
@@ -194,9 +201,13 @@ struct JSONToGoService {
             var lines = ["type \(name) struct {"]
             for field in fields {
                 let paddedName = field.goName.padding(toLength: maxNameLen, withPad: " ", startingAt: 0)
-                let paddedType = field.goType.padding(toLength: maxTypeLen, withPad: " ", startingAt: 0)
+                var displayType = field.goType
+                if options.usePointers && field.nullable && !displayType.hasPrefix("*") {
+                    displayType = "*" + displayType
+                }
+                let paddedType = displayType.padding(toLength: maxTypeLen, withPad: " ", startingAt: 0)
                 var tag = field.jsonKey
-                if (options.addOmitempty && field.omitempty) || field.omitempty {
+                if options.addOmitempty || field.omitempty {
                     tag += ",omitempty"
                 }
                 lines.append("\t\(paddedName) \(paddedType) `json:\"\(tag)\"`")
@@ -211,6 +222,7 @@ struct JSONToGoService {
         let goName: String
         let goType: String
         var omitempty: Bool = false
+        var nullable: Bool = false
     }
 
     enum ConvertError: LocalizedError {

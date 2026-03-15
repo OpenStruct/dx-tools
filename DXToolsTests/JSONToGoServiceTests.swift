@@ -84,4 +84,50 @@ final class JSONToGoServiceTests: XCTestCase {
         let result = try! JSONToGoService.convert(json).get()
         XCTAssertTrue(result.contains("[]bool"))
     }
+
+    // MARK: - omitempty
+
+    func testOmitemptyAddsTagToAllFields() {
+        let json = #"{"name":"John","age":30}"#
+        let options = JSONToGoService.Options(addOmitempty: true)
+        let result = try! JSONToGoService.convert(json, options: options).get()
+        XCTAssertTrue(result.contains(#"`json:"name,omitempty"`"#))
+        XCTAssertTrue(result.contains(#"`json:"age,omitempty"`"#))
+    }
+
+    func testOmitemptyOffNoTag() {
+        let json = #"{"name":"John"}"#
+        let options = JSONToGoService.Options(addOmitempty: false)
+        let result = try! JSONToGoService.convert(json, options: options).get()
+        XCTAssertTrue(result.contains(#"`json:"name"`"#))
+        XCTAssertFalse(result.contains("omitempty"))
+    }
+
+    // MARK: - usePointers
+
+    func testPointersOnNullField() {
+        let json = #"{"name":"John","bio":null}"#
+        let options = JSONToGoService.Options(usePointers: true)
+        let result = try! JSONToGoService.convert(json, options: options).get()
+        XCTAssertTrue(result.contains("*string"))
+        XCTAssertTrue(result.contains("Name") && result.contains("string"))
+    }
+
+    func testPointersOffNullField() {
+        let json = #"{"bio":null}"#
+        let options = JSONToGoService.Options(usePointers: false)
+        let result = try! JSONToGoService.convert(json, options: options).get()
+        XCTAssertTrue(result.contains("interface{}"))
+        XCTAssertFalse(result.contains("*"))
+    }
+
+    func testOmitemptyAndPointersCombined() {
+        let json = #"{"name":"John","bio":null,"age":30}"#
+        let options = JSONToGoService.Options(addOmitempty: true, usePointers: true)
+        let result = try! JSONToGoService.convert(json, options: options).get()
+        XCTAssertTrue(result.contains("*string"))
+        XCTAssertTrue(result.contains(#"omitempty"#))
+        XCTAssertTrue(result.contains(#"`json:"name,omitempty"`"#))
+        XCTAssertTrue(result.contains(#"`json:"bio,omitempty"`"#))
+    }
 }
