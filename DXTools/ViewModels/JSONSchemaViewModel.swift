@@ -15,6 +15,18 @@ class JSONSchemaViewModel {
         result = JSONSchemaService.validate(json: jsonInput, against: schemaInput)
     }
 
+    func autoValidate() {
+        let json = jsonInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        let schema = schemaInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !json.isEmpty, !schema.isEmpty,
+              json.hasPrefix("{") || json.hasPrefix("["),
+              schema.hasPrefix("{") else {
+            result = nil
+            return
+        }
+        validate()
+    }
+
     func sample() {
         jsonInput = """
         {
