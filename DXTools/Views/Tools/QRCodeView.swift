@@ -8,13 +8,16 @@ struct QRCodeView: View {
     var body: some View {
         VStack(spacing: 0) {
             ToolHeader(title: "QR Code Generator", icon: "qrcode") {
-                Picker("Error Correction", selection: $vm.correctionLevel) {
+                Text("Correction")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(t.textTertiary)
+                Picker("", selection: $vm.correctionLevel) {
                     ForEach(QRCodeService.CorrectionLevel.allCases, id: \.self) { level in
-                        Text(level.label).tag(level)
+                        Text(level.rawValue).tag(level)
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 360)
+                .frame(width: 140)
                 .onChange(of: vm.correctionLevel) { _, _ in vm.generate() }
 
                 Spacer()
@@ -30,11 +33,11 @@ struct QRCodeView: View {
                 }
             }
 
-
             HSplitView {
                 // Input
                 VStack(spacing: 0) {
                     EditorPaneHeader(title: "TEXT / URL", icon: "text.cursor") {}
+
                     TextEditor(text: $vm.input)
                         .font(.system(size: 13, weight: .regular, design: .monospaced))
                         .scrollContentBackground(.hidden)
@@ -48,18 +51,17 @@ struct QRCodeView: View {
                     EditorPaneHeader(title: "QR CODE", icon: "qrcode") {}
 
                     if let img = vm.qrImage {
-                        VStack {
+                        VStack(spacing: 12) {
                             Spacer()
                             Image(nsImage: img)
                                 .resizable()
                                 .interpolation(.none)
                                 .scaledToFit()
-                                .frame(maxWidth: 360, maxHeight: 360)
+                                .frame(maxWidth: 320, maxHeight: 320)
                                 .background(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
-                                .padding(20)
-                            
+
                             Text("\(vm.input.count) characters")
                                 .font(.system(size: 10, weight: .medium, design: .monospaced))
                                 .foregroundStyle(t.textTertiary)
