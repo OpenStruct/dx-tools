@@ -63,9 +63,9 @@ struct DXTheme {
         textTertiary:   Color(hex: "4A4A56"),
         textGhost:      Color(hex: "2C2C36"),
 
-        accent:         Color(hex: "5B9BF5"),
-        accentSecondary:Color(hex: "4A7FE5"),
-        accentGlow:     Color(hex: "5B9BF5").opacity(0.25),
+        accent:         Color(hex: "FF8C42"),
+        accentSecondary:Color(hex: "FF6B2C"),
+        accentGlow:     Color(hex: "FF8C42").opacity(0.25),
 
         success:        Color(hex: "4ADE80"),
         error:          Color(hex: "FB7185"),
@@ -96,9 +96,9 @@ struct DXTheme {
         textTertiary:   Color(hex: "A0A0AC"),
         textGhost:      Color(hex: "D4D4DA"),
 
-        accent:         Color(hex: "3B7AE8"),
-        accentSecondary:Color(hex: "2D64D0"),
-        accentGlow:     Color(hex: "3B7AE8").opacity(0.15),
+        accent:         Color(hex: "E8722A"),
+        accentSecondary:Color(hex: "D35F1A"),
+        accentGlow:     Color(hex: "E8722A").opacity(0.15),
 
         success:        Color(hex: "16A34A"),
         error:          Color(hex: "DC2626"),
