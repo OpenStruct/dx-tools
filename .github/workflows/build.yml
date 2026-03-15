@@ -1,0 +1,120 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-cli:
+    name: Build CLI
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build CLI (Release)
+        run: swift build -c release
+
+      - name: Run CLI smoke tests
+        run: |
+          .build/release/dx --version
+          .build/release/dx uuid
+          .build/release/dx hash "test"
+          .build/release/dx base64 encode "hello"
+          .build/release/dx epoch now
+
+      - name: Upload CLI binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: dx-cli
+          path: .build/release/dx
+
+  build-app:
+    name: Build macOS App
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build App (Release)
+        run: |
+          xcodebuild -project DXTools.xcodeproj \
+            -scheme DXTools \
+            -configuration Release \
+            -derivedDataPath build/DerivedData \
+            build
+
+      - name: Run Tests
+        run: |
+          xcodebuild -project DXTools.xcodeproj \
+            -scheme DXToolsTests \
+            -configuration Debug \
+            -derivedDataPath build/DerivedData \
+            test
+
+  release:
+    name: Create Release
+    needs: [build-cli, build-app]
+    runs-on: macos-14
+    if: github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'release:')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Build CLI
+        run: swift build -c release
+
+      - name: Build App
+        run: |
+          xcodegen generate
+          xcodebuild -project DXTools.xcodeproj \
+            -scheme DXTools \
+            -configuration Release \
+            -derivedDataPath build/DerivedData \
+            build
+
+      - name: Package DMG
+        run: |
+          APP_PATH="build/DerivedData/Build/Products/Release/DX Tools.app"
+          mkdir -p build/dmg-staging
+          cp -R "$APP_PATH" build/dmg-staging/
+          ln -s /Applications build/dmg-staging/Applications
+          hdiutil create -volname "DX Tools" \
+            -srcfolder build/dmg-staging \
+            -ov -format UDZO \
+            build/DXTools.dmg
+          rm -rf build/dmg-staging
+
+      - name: Extract version
+        id: version
+        run: echo "version=$(grep 'MARKETING_VERSION' project.yml | head -1 | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: DX Tools v${{ steps.version.outputs.version }}
+          body: |
+            ## DX Tools v${{ steps.version.outputs.version }}
+
+            ### Downloads
+            - **DX Tools.dmg** — macOS app (drag to Applications)
+            - **dx** — CLI binary (copy to ~/bin or /usr/local/bin)
+
+            ### Install CLI via Homebrew
+            ```
+            brew install dx-tools
+            ```
+          files: |
+            build/DXTools.dmg
+            .build/release/dx
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

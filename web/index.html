@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Tools — Developer Experience Toolkit for macOS</title>
+<meta name="description" content="23 developer tools in one native macOS app. JSON, JWT, ports, DNS, regex, colors, hashing — all offline, instant, keyboard-first.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08080B;--bg2:#0E0E13;--surface:#151519;--surface2:#1C1C22;--surface3:#24242C;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);
+  --text:#EEEEF2;--text2:#8A8A99;--text3:#55556A;--ghost:#2A2A38;
+  --accent:#FF8C42;--accent2:#FF6B2C;--glow:rgba(255,140,66,.2);--glow2:rgba(255,107,44,.35);
+  --green:#4ADE80;--red:#FB7185;--blue:#60A5FA;--yellow:#FBBF24;--purple:#C084FC;
+  --radius:16px;--radius-sm:10px;--radius-xs:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6}
+a{color:var(--accent);text-decoration:none;transition:opacity .2s}a:hover{opacity:.85}
+::selection{background:var(--accent);color:#fff}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);background:rgba(8,8,11,.7);border-bottom:1px solid var(--border)}
+nav .logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;letter-spacing:-.3px}
+nav .logo span{color:var(--text2);font-weight:400}
+nav .logo .icon{width:26px;height:26px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 12px var(--glow)}
+nav .links{display:flex;align-items:center;gap:24px;font-size:13px;font-weight:500;color:var(--text2)}
+nav .links a:hover{color:var(--text)}
+nav .dl-btn{padding:7px 18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:12px;border-radius:8px;box-shadow:0 4px 16px var(--glow);transition:transform .15s,box-shadow .15s}
+nav .dl-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--glow2);opacity:1}
+
+/* ── Hero ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:800px;height:800px;background:radial-gradient(circle,var(--glow) 0%,transparent 65%);top:10%;left:50%;transform:translateX(-50%);pointer-events:none;animation:glow 6s ease-in-out infinite}
+.hero::after{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(96,165,250,.08) 0%,transparent 70%);bottom:10%;right:10%;pointer-events:none;animation:glow 8s ease-in-out infinite reverse}
+@keyframes glow{0%,100%{opacity:.3;transform:translateX(-50%) scale(1)}50%{opacity:.6;transform:translateX(-50%) scale(1.15)}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--surface);border:1px solid var(--border2);border-radius:24px;font-size:12px;color:var(--text2);font-weight:600;margin-bottom:28px;position:relative;z-index:1}
+.hero-badge .pulse{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+
+.hero h1{font-size:clamp(48px,7vw,82px);font-weight:900;letter-spacing:-3px;line-height:1;margin-bottom:20px;position:relative;z-index:1}
+.hero h1 .thin{font-weight:200;color:var(--text2)}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.hero-sub{font-size:18px;color:var(--text2);max-width:540px;margin-bottom:40px;position:relative;z-index:1;font-weight:400;line-height:1.7}
+
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;margin-bottom:32px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:15px;border-radius:12px;box-shadow:0 8px 32px var(--glow);transition:all .2s;border:none;cursor:pointer}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 44px var(--glow2);opacity:1}
+.btn-primary .sm{font-weight:400;opacity:.7;font-size:12px}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--surface);color:var(--text);font-weight:600;font-size:15px;border-radius:12px;border:1px solid var(--border2);transition:all .2s;cursor:pointer}
+.btn-secondary:hover{border-color:var(--accent);box-shadow:0 0 24px var(--glow);opacity:1}
+.btn-secondary code{font-family:'SF Mono','JetBrains Mono',monospace;font-size:13px;color:var(--accent)}
+
+.hero-meta{display:flex;gap:24px;position:relative;z-index:1;flex-wrap:wrap;justify-content:center}
+.hero-meta .tag{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);font-weight:500}
+.hero-meta .tag .dot{width:4px;height:4px;border-radius:50%}
+
+/* ── Screenshot ── */
+.screenshot-wrap{max-width:1100px;margin:-20px auto 0;padding:0 24px;position:relative;z-index:2}
+.screenshot{width:100%;border-radius:16px;border:1px solid var(--border2);overflow:hidden;background:var(--surface);box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 1px var(--border);aspect-ratio:16/10;display:flex;align-items:stretch}
+.ss-sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0}
+.ss-sidebar .ss-search{margin:0 12px 12px;padding:7px 10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text3);display:flex;align-items:center;gap:6px}
+.ss-sidebar .ss-cat{padding:4px 16px;font-size:9px;font-weight:800;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:12px}
+.ss-sidebar .ss-item{padding:6px 12px;margin:1px 8px;border-radius:8px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;font-weight:500}
+.ss-sidebar .ss-item.active{background:var(--surface3);color:var(--text)}
+.ss-sidebar .ss-item.active::before{content:'';width:3px;height:14px;background:var(--accent);border-radius:2px;margin-right:-2px;box-shadow:0 0 8px var(--glow)}
+.ss-sidebar .ss-item .ico{font-size:10px;opacity:.6}
+.ss-main{flex:1;display:flex;flex-direction:column}
+.ss-toolbar{padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.015)}
+.ss-toolbar .dot{width:7px;height:7px;border-radius:50%;background:var(--text3);opacity:.3}
+.ss-toolbar .dot.r{background:var(--red)}.ss-toolbar .dot.y{background:var(--yellow)}.ss-toolbar .dot.g{background:var(--green)}
+.ss-toolbar .title{font-size:11px;font-weight:700;color:var(--text2);margin-left:8px}
+.ss-content{flex:1;display:flex}
+.ss-pane{flex:1;display:flex;flex-direction:column}
+.ss-pane-header{padding:6px 12px;border-bottom:1px solid var(--border);font-size:9px;font-weight:800;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.01)}
+.ss-pane-header .acc{color:var(--accent);font-size:8px}
+.ss-code{flex:1;padding:12px 14px;font-family:'SF Mono','JetBrains Mono',monospace;font-size:10px;line-height:1.8;color:var(--text2);overflow:hidden}
+.ss-code .ln{color:var(--text3);margin-right:12px;user-select:none;display:inline-block;width:16px;text-align:right}
+.ss-code .key{color:#7DD3FC}.ss-code .str{color:#FCA5A5}.ss-code .num{color:#86EFAC}.ss-code .brace{color:#FDE68A}
+.ss-divider{width:1px;background:var(--border)}
+
+/* ── Stats ── */
+.stats{display:flex;justify-content:center;gap:48px;padding:80px 24px;position:relative}
+.stats::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent)}
+.stats::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent)}
+.stat{text-align:center}
+.stat .n{font-size:48px;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--accent),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .l{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-top:4px}
+
+/* ── Tools ── */
+.tools{max-width:1200px;margin:0 auto;padding:100px 24px}
+.section-label{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:12px}
+.section-label .pill{padding:4px 12px;background:var(--accent);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;font-weight:800;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.section-title{font-size:clamp(32px,4vw,48px);font-weight:800;text-align:center;letter-spacing:-1.5px;margin-bottom:8px}
+.section-sub{text-align:center;color:var(--text2);font-size:16px;margin-bottom:56px;max-width:500px;margin-left:auto;margin-right:auto}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.tool-card{padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all .25s;position:relative;overflow:hidden}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.tool-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tool-card:hover::before{opacity:1}
+.tool-card .card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.tool-card .card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--surface2);border:1px solid var(--border)}
+.tool-card h3{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.tool-card p{font-size:13px;color:var(--text2);line-height:1.6}
+.tool-card .card-tag{display:inline-block;padding:3px 9px;background:rgba(255,140,66,.06);border:1px solid rgba(255,140,66,.1);border-radius:4px;font-size:9px;font-weight:800;color:var(--accent);margin-top:12px;text-transform:uppercase;letter-spacing:.8px}
+
+/* Category colors */
+.cat-json .card-icon{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.15)}.cat-json .card-icon span{filter:hue-rotate(0deg)}
+.cat-encoding .card-icon{background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.15)}
+.cat-gen .card-icon{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.15)}
+.cat-devops .card-icon{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.15)}
+.cat-text .card-icon{background:rgba(251,113,133,.08);border-color:rgba(251,113,133,.15)}
+
+/* ── Features ── */
+.features{max-width:1100px;margin:0 auto;padding:100px 24px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+.feat-card .feat-icon{font-size:32px;margin-bottom:16px}
+.feat-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.feat-card p{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── CLI ── */
+.cli{max-width:900px;margin:0 auto;padding:100px 24px}
+.terminal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.terminal-bar{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.terminal-bar .d{width:10px;height:10px;border-radius:50%}.terminal-bar .d.r{background:#FF5F57}.terminal-bar .d.y{background:#FFBD2E}.terminal-bar .d.g{background:#28C840}
+.terminal-bar .tab{margin-left:12px;padding:4px 12px;background:var(--surface);border-radius:5px;font-size:11px;font-weight:600;color:var(--text2)}
+.terminal-body{padding:20px 24px;font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;font-size:13px;line-height:2}
+.terminal-body .prompt{color:var(--accent);font-weight:700}
+.terminal-body .cmd{color:var(--text)}
+.terminal-body .out{color:var(--text3)}
+.terminal-body .hl{color:var(--green)}
+.terminal-body .warn{color:var(--yellow)}
+.terminal-body .dim{color:var(--text3)}
+
+/* ── Keys ── */
+.keys{max-width:700px;margin:0 auto;padding:80px 24px;text-align:center}
+.key-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:32px}
+.key-item{display:flex;align-items:center;gap:8px}
+.kbd{display:inline-flex;align-items:center;padding:5px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;font-family:'SF Mono',monospace;font-size:12px;font-weight:800;color:var(--text2);box-shadow:0 2px 4px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04);min-width:36px;justify-content:center}
+.key-label{font-size:12px;color:var(--text3);font-weight:500}
+
+/* ── Footer ── */
+footer{text-align:center;padding:60px 24px;border-top:1px solid var(--border)}
+footer .f-logo{font-size:18px;font-weight:900;margin-bottom:8px}
+footer .f-logo span{color:var(--text3);font-weight:300}
+footer p{font-size:13px;color:var(--text3);margin-top:4px}
+footer .f-links{display:flex;gap:20px;justify-content:center;margin-top:16px;font-size:13px}
+footer .f-links a{color:var(--text2)}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  nav{padding:12px 16px}nav .links{display:none}
+  .stats{flex-wrap:wrap;gap:28px;padding:48px 24px}
+  .tool-grid{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr}
+  .ss-sidebar{display:none}
+  .hero h1{letter-spacing:-1.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="logo"><div class="icon">⚡</div>DX<span> Tools</span></div>
+  <div class="links">
+    <a href="#tools">Tools</a>
+    <a href="#features">Features</a>
+    <a href="#cli">CLI</a>
+    <a href="#" class="dl-btn">Download</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge"><span class="pulse"></span>v2.0 — 23 tools, native macOS</div>
+  <h1><span class="gradient">DX</span><span class="thin"> Tools</span></h1>
+  <p class="hero-sub">23 developer tools in one native macOS app. JSON formatting, JWT decoding, port killing, DNS lookups, regex testing — all offline, instant, keyboard-first.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">⬇ Download DMG <span class="sm">2.4 MB</span></a>
+    <a href="#" class="btn-secondary"><code>brew install dx-tools</code></a>
+  </div>
+  <div class="hero-meta">
+    <span class="tag"><span class="dot" style="background:var(--green)"></span> macOS 14+</span>
+    <span class="tag"><span class="dot" style="background:var(--blue)"></span> Universal Binary</span>
+    <span class="tag"><span class="dot" style="background:var(--yellow)"></span> Zero Dependencies</span>
+    <span class="tag"><span class="dot" style="background:var(--purple)"></span> 245 Tests</span>
+  </div>
+</section>
+
+<!-- Screenshot mockup -->
+<div class="screenshot-wrap">
+  <div class="screenshot">
+    <div class="ss-sidebar">
+      <div class="ss-search">🔍 Search…</div>
+      <div class="ss-cat">⭐ Favorites</div>
+      <div class="ss-item active"><span class="ico">📋</span> JSON Formatter</div>
+      <div class="ss-cat">JSON</div>
+      <div class="ss-item"><span class="ico">🔄</span> JSON → Go</div>
+      <div class="ss-item"><span class="ico">🔄</span> JSON → Swift</div>
+      <div class="ss-item"><span class="ico">🔄</span> JSON → TypeScript</div>
+      <div class="ss-item"><span class="ico">⚖️</span> JSON Diff</div>
+      <div class="ss-cat">Encoding</div>
+      <div class="ss-item"><span class="ico">🔑</span> JWT Decoder</div>
+      <div class="ss-item"><span class="ico">🔐</span> Base64</div>
+      <div class="ss-item"><span class="ico">#️⃣</span> Hash Generator</div>
+      <div class="ss-item"><span class="ico">🔗</span> URL Encoder</div>
+      <div class="ss-cat">DevOps</div>
+      <div class="ss-item"><span class="ico">🔌</span> Port Manager</div>
+      <div class="ss-item"><span class="ico">🌐</span> Network Info</div>
+    </div>
+    <div class="ss-main">
+      <div class="ss-toolbar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="title">JSON Formatter</span>
+      </div>
+      <div class="ss-content">
+        <div class="ss-pane" style="border-right:1px solid var(--border)">
+          <div class="ss-pane-header"><span class="acc">●</span> INPUT</div>
+          <div class="ss-code">
+            <div><span class="ln">1</span><span class="brace">{</span></div>
+            <div><span class="ln">2</span>  <span class="key">"users"</span>: <span class="brace">[</span></div>
+            <div><span class="ln">3</span>    <span class="brace">{</span></div>
+            <div><span class="ln">4</span>      <span class="key">"id"</span>: <span class="num">1</span>,</div>
+            <div><span class="ln">5</span>      <span class="key">"name"</span>: <span class="str">"Nam"</span>,</div>
+            <div><span class="ln">6</span>      <span class="key">"email"</span>: <span class="str">"nam@dx.dev"</span>,</div>
+            <div><span class="ln">7</span>      <span class="key">"active"</span>: <span class="num">true</span></div>
+            <div><span class="ln">8</span>    <span class="brace">}</span></div>
+            <div><span class="ln">9</span>  <span class="brace">]</span></div>
+            <div><span class="ln">10</span><span class="brace">}</span></div>
+          </div>
+        </div>
+        <div class="ss-pane">
+          <div class="ss-pane-header"><span class="acc">●</span> OUTPUT <span style="margin-left:auto;color:var(--green);font-size:8px;font-weight:700">✓ VALID</span></div>
+          <div class="ss-code">
+            <div><span class="ln">1</span><span class="brace">{</span></div>
+            <div><span class="ln">2</span>  <span class="key">"users"</span>: <span class="brace">[</span></div>
+            <div><span class="ln">3</span>    <span class="brace">{</span></div>
+            <div><span class="ln">4</span>      <span class="key">"active"</span>: <span class="num">true</span>,</div>
+            <div><span class="ln">5</span>      <span class="key">"email"</span>: <span class="str">"nam@dx.dev"</span>,</div>
+            <div><span class="ln">6</span>      <span class="key">"id"</span>: <span class="num">1</span>,</div>
+            <div><span class="ln">7</span>      <span class="key">"name"</span>: <span class="str">"Nam"</span></div>
+            <div><span class="ln">8</span>    <span class="brace">}</span></div>
+            <div><span class="ln">9</span>  <span class="brace">]</span></div>
+            <div><span class="ln">10</span><span class="brace">}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="n">23</div><div class="l">Tools</div></div>
+  <div class="stat"><div class="n">245</div><div class="l">Tests</div></div>
+  <div class="stat"><div class="n">2.4</div><div class="l">MB</div></div>
+  <div class="stat"><div class="n">0</div><div class="l">Dependencies</div></div>
+  <div class="stat"><div class="n">12K</div><div class="l">Lines</div></div>
+</div>
+
+<!-- Tools -->
+<section class="tools" id="tools">
+  <div class="section-label"><span class="pill">23 Tools</span></div>
+  <h2 class="section-title">Everything You Need</h2>
+  <p class="section-sub">Stop switching between random websites. Every tool runs locally, instantly, with zero telemetry.</p>
+
+  <div class="tool-grid">
+    <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>📋</span></div><h3>JSON Formatter</h3></div><p>Format, minify, validate JSON. Syntax highlighting, bracket matching, line numbers. Configurable indent.</p><span class="card-tag">JSON</span></div>
+    <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>🔄</span></div><h3>JSON → Go / Swift / TS</h3></div><p>Convert JSON to Go structs, Swift Codable models, and TypeScript interfaces. Handles nesting, arrays, optionals.</p><span class="card-tag">JSON</span></div>
+    <div class="tool-card cat-json"><div class="card-head"><div class="card-icon"><span>⚖️</span></div><h3>JSON Diff</h3></div><p>Side-by-side structural diff. Highlights added, removed, and changed keys with path tracking.</p><span class="card-tag">JSON</span></div>
+    <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🔑</span></div><h3>JWT Decoder</h3></div><p>Decode JWT tokens. Inspect header, payload, claims. Check expiration status with countdown.</p><span class="card-tag">Encoding</span></div>
+    <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🔐</span></div><h3>Base64 Encode/Decode</h3></div><p>Standard and URL-safe base64. Auto-padding. Handles binary data detection.</p><span class="card-tag">Encoding</span></div>
+    <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>#️⃣</span></div><h3>Hash Generator</h3></div><p>MD5, SHA-1, SHA-256, SHA-512 in one view. Hash text or drag & drop files.</p><span class="card-tag">Encoding</span></div>
+    <div class="tool-card cat-encoding"><div class="card-head"><div class="card-icon"><span>🔗</span></div><h3>URL Encoder/Decoder</h3></div><p>Percent-encode/decode URLs. Parse into components — scheme, host, path, query params, fragment.</p><span class="card-tag">Encoding</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🎲</span></div><h3>UUID Generator</h3></div><p>Generate v4 UUIDs. Bulk generation, uppercase/lowercase, one-click copy.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🎨</span></div><h3>Color Converter</h3></div><p>HEX ↔ RGB ↔ HSL. Code generation for Swift, CSS, Flutter, Android, Tailwind. Shade palette.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>⏱</span></div><h3>Epoch Converter</h3></div><p>Unix timestamp ↔ human date. Auto-detects seconds vs milliseconds. 8 world clocks.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🔒</span></div><h3>Password Generator</h3></div><p>Cryptographically secure. Passwords & passphrases. Strength meter. Character-colored output.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🛡</span></div><h3>Unix Permissions</h3></div><p>chmod calculator. Numeric ↔ symbolic. Interactive checkboxes. Setuid/setgid/sticky bit.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>⏰</span></div><h3>Cron Parser</h3></div><p>Human-readable descriptions. Next 10 run times. Field breakdown. Click-to-try examples.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🔌</span></div><h3>Port Manager</h3></div><p>See every listening port. Kill processes instantly. Common dev port monitoring. Search & sort.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🌐</span></div><h3>Network Info & DNS</h3></div><p>Local/public IP, interfaces, DNS servers. Full DNS lookup — A, AAAA, CNAME, MX, NS, TXT records.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📡</span></div><h3>API Request Builder</h3></div><p>Build & send HTTP requests. Headers, body, auth. Response viewer with timing. Mini Postman.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>📋</span></div><h3>Env Manager</h3></div><p>Parse .env files. Sensitive value masking. Diff two envs. Validate against templates.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>💻</span></div><h3>cURL → Code</h3></div><p>Paste cURL, get Swift, Go, Python, JavaScript, or Ruby. Parses headers, body, method.</p><span class="card-tag">DevOps</span></div>
+    <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>✏️</span></div><h3>Regex Tester</h3></div><p>Live regex testing. Match highlighting, capture groups, replace mode. Flag toggles.</p><span class="card-tag">Text</span></div>
+    <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>📝</span></div><h3>Markdown Preview</h3></div><p>Live markdown rendering. Side-by-side editor and preview.</p><span class="card-tag">Text</span></div>
+    <div class="tool-card cat-text"><div class="card-head"><div class="card-icon"><span>📄</span></div><h3>Lorem Generator</h3></div><p>Words, sentences, paragraphs. Fake names, emails, phones, addresses. JSON with realistic data.</p><span class="card-tag">Text</span></div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features">
+  <div class="section-label"><span class="pill">UX</span></div>
+  <h2 class="section-title">Built Different</h2>
+  <p class="section-sub">Not a web wrapper. Not Electron. Pure SwiftUI, native performance, zero bloat.</p>
+
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">⌨️</div>
+      <h3>Command Palette</h3>
+      <p>⌘K opens a Spotlight-like search. Jump to any tool or action by name. Arrow keys + Enter.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <h3>Smart Clipboard</h3>
+      <p>Auto-detects copied content — JWT, JSON, cURL, colors, UUIDs, epochs. One click to route to the right tool.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📌</div>
+      <h3>Menu Bar</h3>
+      <p>Quick UUID, Epoch, Password generation from the menu bar without opening the app.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⭐</div>
+      <h3>Favorites</h3>
+      <p>Right-click to favorite any tool. Favorites pinned to the top of the sidebar.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌗</div>
+      <h3>Dark & Light</h3>
+      <p>Hand-tuned dark mode with orange accent glow. Follows system preference automatically.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔤</div>
+      <h3>Pro Code Editor</h3>
+      <p>Line numbers, bracket matching, auto-indent, JSON syntax highlighting. Not a textarea.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLI -->
+<section class="cli" id="cli">
+  <div class="section-label"><span class="pill">CLI</span></div>
+  <h2 class="section-title">Terminal Companion</h2>
+  <p class="section-sub">Same tools from your terminal. Pipe-friendly. 10 subcommands.</p>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="d r"></span><span class="d y"></span><span class="d g"></span>
+      <span class="tab">Terminal — dx</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="prompt">❯</span> <span class="cmd">dx port list</span></div>
+      <div class="dim">PORT    PID      PROCESS          USER</div>
+      <div class="out"><span class="hl">3000</span>    1234     node             nam     *:3000</div>
+      <div class="out"><span class="warn">5432</span>    1295     postgres         nam     127.0.0.1:5432</div>
+      <div class="out"><span class="hl">8080</span>    5678     nginx            nam     *:8080</div>
+      <br>
+      <div><span class="prompt">❯</span> <span class="cmd">dx port kill 3000</span></div>
+      <div><span class="hl">✓ Killed node (PID 1234) on port 3000</span></div>
+      <br>
+      <div><span class="prompt">❯</span> <span class="cmd">dx json format api-response.json</span></div>
+      <div class="out"><span class="dim">{</span></div>
+      <div class="out">  <span style="color:#7DD3FC">"status"</span>: <span style="color:#86EFAC">200</span>,</div>
+      <div class="out">  <span style="color:#7DD3FC">"data"</span>: <span class="dim">[...]</span></div>
+      <div class="out"><span class="dim">}</span></div>
+      <br>
+      <div><span class="prompt">❯</span> <span class="cmd">dx hash "hello world"</span></div>
+      <div class="out">MD5     <span class="dim">5eb63bbbe01eeed093cb22bb8f5acdc3</span></div>
+      <div class="out">SHA-256 <span style="color:var(--blue)">b94d27b9934d3e08a52e52d7da7dabfac484efe37a53...</span></div>
+      <br>
+      <div><span class="prompt">❯</span> <span class="cmd">echo '{"a":1}' | dx base64 encode</span></div>
+      <div class="hl">eyJhIjoxfQ==</div>
+      <br>
+      <div><span class="prompt">❯</span> <span class="cmd">dx uuid -n 3</span></div>
+      <div class="out">550e8400-e29b-41d4-a716-446655440000</div>
+      <div class="out">6ba7b810-9dad-11d1-80b4-00c04fd430c8</div>
+      <div class="out">f47ac10b-58cc-4372-a567-0e02b2c3d479</div>
+    </div>
+  </div>
+</section>
+
+<!-- Keyboard shortcuts -->
+<section class="keys">
+  <h2 class="section-title">Keyboard-First</h2>
+  <p class="section-sub">Every action has a shortcut. Never touch the mouse.</p>
+  <div class="key-grid">
+    <div class="key-item"><span class="kbd">⌘K</span><span class="key-label">Commands</span></div>
+    <div class="key-item"><span class="kbd">⌘1–9</span><span class="key-label">Switch Tool</span></div>
+    <div class="key-item"><span class="kbd">⌘⏎</span><span class="key-label">Execute</span></div>
+    <div class="key-item"><span class="kbd">⌘T</span><span class="key-label">New Tab</span></div>
+    <div class="key-item"><span class="kbd">⌘/</span><span class="key-label">Shortcuts</span></div>
+    <div class="key-item"><span class="kbd">⌘⇧Space</span><span class="key-label">Global Launch</span></div>
+    <div class="key-item"><span class="kbd">⌘⇧C</span><span class="key-label">Copy Output</span></div>
+    <div class="key-item"><span class="kbd">⌘⇧V</span><span class="key-label">Paste & Run</span></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="f-logo">DX<span> Tools</span></div>
+  <p>Built with SwiftUI. No telemetry. No accounts. No Electron. Just tools.</p>
+  <p style="color:var(--text3);font-size:11px;margin-top:4px">macOS 14+ · Swift 5.9 · 12,485 lines of code</p>
+  <div class="f-links">
+    <a href="#">GitHub</a>
+    <a href="#">Changelog</a>
+    <a href="#">License (MIT)</a>
+  </div>
+</footer>
+
+</body>
+</html>

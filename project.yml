@@ -1,0 +1,48 @@
+name: DXTools
+options:
+  bundleIdPrefix: com.cradx
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: 1
+
+targets:
+  DXToolsTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: DXToolsTests
+    dependencies:
+      - target: DXTools
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.cradx.dxtools.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/DX Tools.app/Contents/MacOS/DX Tools"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+  DXTools:
+    type: application
+    platform: macOS
+    sources:
+      - path: DXTools
+        excludes:
+          - "*.xcassets/.*"
+    resources:
+      - path: DXTools/Assets.xcassets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.cradx.dxtools
+        INFOPLIST_FILE: DXTools/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        PRODUCT_NAME: "DX Tools"
+        COMBINE_HIDPI_IMAGES: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        GENERATE_INFOPLIST_FILE: NO

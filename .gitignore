@@ -1,0 +1,29 @@
+# Xcode
+DXTools.xcodeproj/
+xcuserdata/
+*.xcworkspace/
+DerivedData/
+build/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+*.swp
+*~
+
+# Build artifacts
+*.dmg
+*.app
+*.dSYM.zip
+*.dSYM
+
+# Python
+__pycache__/
+*.pyc
+
+# App icon generated
+DXTools/Assets.xcassets/AppIcon.appiconset/icon_*.png
