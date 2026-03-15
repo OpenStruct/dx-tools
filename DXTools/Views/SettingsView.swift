@@ -53,10 +53,11 @@ struct SettingsView: View {
 
             VStack(spacing: 20) {
                 Spacer()
-                ZStack {
-                    Circle().fill(theme.accentGradient).frame(width: 64, height: 64)
-                    Image(systemName: "bolt.fill").font(.system(size: 28)).foregroundStyle(.white)
-                }
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .shadow(color: .black.opacity(0.3), radius: 10, y: 4)
                 Text("DX Tools").font(.title2).fontWeight(.bold)
                 Text("Developer Experience Toolkit").foregroundStyle(.secondary)
                 Text("Version 2.0.0").font(.caption).foregroundStyle(.tertiary)

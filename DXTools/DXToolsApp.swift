@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func setupMenuBar() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "bolt.fill", accessibilityDescription: "DX Tools")
+            button.image = NSImage(systemSymbolName: "wrench.and.screwdriver.fill", accessibilityDescription: "DX Tools")
             button.image?.size = NSSize(width: 16, height: 16)
         }
 

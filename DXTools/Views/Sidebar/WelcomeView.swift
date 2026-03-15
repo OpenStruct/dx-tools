@@ -28,8 +28,8 @@ struct WelcomeView: View {
                             .shadow(color: t.accentGlow, radius: 20, y: 8)
                             .shadow(color: t.accent.opacity(0.1), radius: 40, y: 16)
 
-                        Image(systemName: "bolt.fill")
-                            .font(.system(size: 34, weight: .black))
+                        Text("DX")
+                            .font(.system(size: 30, weight: .black, design: .rounded))
                             .foregroundStyle(.white)
                     }
                     .scaleEffect(animateIn ? 1 : 0.4)

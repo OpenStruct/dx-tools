@@ -97,8 +97,8 @@ struct SidebarView: View {
                         .fill(t.accentGradient)
                         .frame(width: 20, height: 20)
                         .shadow(color: t.accentGlow, radius: 6)
-                    Image(systemName: "bolt.fill")
-                        .font(.system(size: 9, weight: .black))
+                    Text("DX")
+                        .font(.system(size: 8, weight: .black, design: .rounded))
                         .foregroundStyle(.white)
                 }
 

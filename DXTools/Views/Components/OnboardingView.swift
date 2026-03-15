@@ -108,7 +108,11 @@ struct OnboardingView: View {
 
             ZStack {
                 Circle().fill(t.accentGradient).frame(width: 56, height: 56)
-                Image(systemName: page.icon).font(.system(size: 24, weight: .semibold)).foregroundStyle(.white)
+                if page.icon == "bolt.fill" {
+                    Text("DX").font(.system(size: 22, weight: .black, design: .rounded)).foregroundStyle(.white)
+                } else {
+                    Image(systemName: page.icon).font(.system(size: 24, weight: .semibold)).foregroundStyle(.white)
+                }
             }
             .shadow(color: t.accentGlow, radius: 16)
 
