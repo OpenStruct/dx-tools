@@ -100,7 +100,7 @@ jobs:
 
       - name: Extract version
         id: version
-        run: echo "version=$(grep 'MARKETING_VERSION' project.yml | head -1 | awk '{print $2}')" >> $GITHUB_OUTPUT
+        run: echo "version=$(grep 'MARKETING_VERSION' project.yml | head -1 | awk '{print $2}' | tr -d '\"')" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
