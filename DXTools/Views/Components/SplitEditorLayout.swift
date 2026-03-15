@@ -18,7 +18,6 @@ struct SplitEditorLayout<InputHeader: View, OutputHeader: View, InputFooter: Vie
                 Rectangle().fill(t.border).frame(height: 1)
 
                 ZStack {
-                    t.editorBg
                     CodeEditor(text: $input, isEditable: true, language: inputLanguage)
 
                     if input.isEmpty {
@@ -27,8 +26,10 @@ struct SplitEditorLayout<InputHeader: View, OutputHeader: View, InputFooter: Vie
                             title: "Paste or drop content",
                             subtitle: "⌘V to paste · Drop files here"
                         )
+                        .allowsHitTesting(false)
                     }
                 }
+                .background(t.editorBg)
 
                 Rectangle().fill(t.border).frame(height: 1)
                 inputFooter()
@@ -46,7 +47,6 @@ struct SplitEditorLayout<InputHeader: View, OutputHeader: View, InputFooter: Vie
                 Rectangle().fill(t.border).frame(height: 1)
 
                 ZStack {
-                    t.editorBg
                     CodeEditor(text: $output, isEditable: false, language: outputLanguage)
 
                     if output.isEmpty && input.isEmpty {
@@ -55,8 +55,10 @@ struct SplitEditorLayout<InputHeader: View, OutputHeader: View, InputFooter: Vie
                             title: "Output",
                             subtitle: "Result will appear here"
                         )
+                        .allowsHitTesting(false)
                     }
                 }
+                .background(t.editorBg)
             }
             .frame(minWidth: 320)
         }
