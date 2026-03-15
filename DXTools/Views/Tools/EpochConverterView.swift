@@ -7,6 +7,7 @@ struct EpochConverterView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Epoch Converter", icon: "clock.fill")
             // Mode picker
             HStack(spacing: 16) {
                 Picker("", selection: $vm.mode) {
@@ -129,14 +130,6 @@ struct EpochConverterView: View {
             if vm.mode == .now && autoRefresh { vm.refresh() }
         }
         .onChange(of: vm.mode) { _, _ in vm.refresh() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "clock").foregroundStyle(.tint)
-                    Text("Epoch Converter").fontWeight(.semibold)
-                }
-            }
-        }
     }
 
     func timeRow(_ label: String, _ value: String, highlight: Bool = false) -> some View {

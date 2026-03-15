@@ -6,8 +6,7 @@ struct URLCoderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Toolbar
-            EditorPaneHeader(title: "URL Encoder / Decoder", icon: "link") {
+            ToolHeader(title: "URL Encoder / Decoder", icon: "link") {
                 HStack(spacing: 1) {
                     ForEach(URLCoderViewModel.Mode.allCases, id: \.self) { mode in
                         Button {
@@ -74,7 +73,6 @@ struct URLCoderView: View {
             }
         }
         .background(t.editorBg)
-        .toolbar { ToolbarItem(placement: .principal) { toolTitle("link", "URL Encoder") } }
     }
 
     func urlPartsView(_ parts: URLCoderService.URLParts) -> some View {

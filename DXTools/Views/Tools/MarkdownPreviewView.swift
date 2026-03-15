@@ -8,6 +8,7 @@ struct MarkdownPreviewView: View {
         HSplitView {
             // Editor
             VStack(spacing: 0) {
+            ToolHeader(title: "Markdown Preview", icon: "text.document")
                 EditorPaneHeader(title: "Markdown", icon: "text.document") {
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.loadSample() }
                     SmallIconButton(title: "Clear", icon: "trash") { vm.clear() }
@@ -44,14 +45,6 @@ struct MarkdownPreviewView: View {
         }
         .background(Color(nsColor: .textBackgroundColor))
         .onChange(of: vm.input) { _, _ in vm.render() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "text.document").foregroundStyle(.tint)
-                    Text("Markdown Preview").fontWeight(.semibold)
-                }
-            }
-        }
     }
 }
 

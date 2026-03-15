@@ -49,6 +49,13 @@ struct SplitEditorLayout<InputHeader: View, OutputHeader: View, InputFooter: Vie
                     return true
                 }
 
+                if !toolId.isEmpty {
+                    Rectangle().fill(t.border).frame(height: 0.5)
+                    HistoryPanel(toolId: toolId) { restored in
+                        input = restored
+                    }
+                }
+
                 Rectangle().fill(t.border).frame(height: 1)
                 inputFooter()
             }

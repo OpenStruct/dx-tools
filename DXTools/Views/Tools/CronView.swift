@@ -5,6 +5,8 @@ struct CronView: View {
     @Environment(\.theme) private var t
 
     var body: some View {
+        VStack(spacing: 0) {
+            ToolHeader(title: "Cron Parser", icon: "clock.badge.checkmark")
         ScrollView {
             VStack(spacing: 20) {
                 // Input
@@ -150,12 +152,7 @@ struct CronView: View {
             .padding(24)
         }
         .background(t.bg)
-        .toolbar { ToolbarItem(placement: .principal) {
-            HStack(spacing: 7) {
-                Image(systemName: "clock.badge.checkmark").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                Text("Cron Parser").font(.system(size: 13, weight: .bold, design: .rounded))
-            }
-        }}
+        } // VStack
     }
 
     func relativeTime(_ date: Date) -> String {
@@ -167,3 +164,4 @@ struct CronView: View {
         return "in \(hours / 24)d"
     }
 }
+

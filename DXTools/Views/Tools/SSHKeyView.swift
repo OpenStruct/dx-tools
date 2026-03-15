@@ -7,8 +7,7 @@ struct SSHKeyView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Controls
-            HStack(spacing: 16) {
+            ToolHeader(title: "SSH Key Generator", icon: "key.horizontal.fill") {
                 HStack(spacing: 6) {
                     Text("Type").font(.system(size: 10, weight: .bold)).foregroundStyle(t.textTertiary)
                     Picker("", selection: $vm.keyType) {
@@ -35,9 +34,7 @@ struct SSHKeyView: View {
                 }
                 .disabled(vm.isGenerating)
             }
-            .padding(.horizontal, 16).padding(.vertical, 12)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             if let kp = vm.keyPair {
                 ScrollView {
@@ -99,14 +96,6 @@ struct SSHKeyView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "key.horizontal.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("SSH Key Generator").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func keySection(title: String, content: String, icon: String, color: Color, onCopy: @escaping () -> Void, onSave: @escaping () -> Void) -> some View {

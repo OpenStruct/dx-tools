@@ -13,6 +13,7 @@ struct APIRequestView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "API Request", icon: "paperplane.fill")
             // URL bar
             HStack(spacing: 8) {
                 // Method picker
@@ -118,9 +119,9 @@ struct APIRequestView: View {
                     case .body:
                         CodeEditor(text: $vm.request.body, isEditable: true, language: "json")
                     case .headers:
-                        keyValueEditor(items: $vm.request.headers, onRemove: vm.removeHeader)
+                        keyValueEditor(items: $vm.request.headers)
                     case .params:
-                        keyValueEditor(items: $vm.request.queryParams, onRemove: vm.removeParam)
+                        keyValueEditor(items: $vm.request.queryParams)
                     }
                 }
                 .frame(minWidth: 300)
@@ -215,14 +216,6 @@ struct APIRequestView: View {
             }
         }
         .background(theme.editorBg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "paperplane").foregroundStyle(theme.accent)
-                    Text("API Request Builder").fontWeight(.semibold)
-                }
-            }
-        }
     }
 
     @ViewBuilder
@@ -258,42 +251,33 @@ struct APIRequestView: View {
         }
     }
 
-    func keyValueEditor(items: Binding<[(key: String, value: String, enabled: Bool)]>, onRemove: @escaping (Int) -> Void) -> some View {
+    func keyValueEditor(items: Binding<[APIRequestService.KeyValueItem]>) -> some View {
         ScrollView {
             LazyVStack(spacing: 4) {
-                ForEach(items.wrappedValue.indices, id: \.self) { i in
+                ForEach(items) { $item in
                     HStack(spacing: 6) {
-                        Toggle("", isOn: Binding(
-                            get: { items.wrappedValue[i].enabled },
-                            set: { items.wrappedValue[i].enabled = $0 }
-                        ))
-                        .toggleStyle(.checkbox)
-                        .controlSize(.small)
+                        Toggle("", isOn: $item.enabled)
+                            .toggleStyle(.checkbox)
+                            .controlSize(.small)
 
-                        TextField("Key", text: Binding(
-                            get: { items.wrappedValue[i].key },
-                            set: { items.wrappedValue[i].key = $0 }
-                        ))
-                        .textFieldStyle(.plain)
-                        .font(.system(size: 12, design: .monospaced))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 5)
-                        .background(theme.surfaceHover)
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        TextField("Key", text: $item.key)
+                            .textFieldStyle(.plain)
+                            .font(.system(size: 12, design: .monospaced))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background(theme.surfaceHover)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
 
-                        TextField("Value", text: Binding(
-                            get: { items.wrappedValue[i].value },
-                            set: { items.wrappedValue[i].value = $0 }
-                        ))
-                        .textFieldStyle(.plain)
-                        .font(.system(size: 12, design: .monospaced))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 5)
-                        .background(theme.surfaceHover)
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        TextField("Value", text: $item.value)
+                            .textFieldStyle(.plain)
+                            .font(.system(size: 12, design: .monospaced))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background(theme.surfaceHover)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
 
                         Button {
-                            onRemove(i)
+                            items.wrappedValue.removeAll { $0.id == item.id }
                         } label: {
                             Image(systemName: "xmark")
                                 .font(.system(size: 9, weight: .bold))

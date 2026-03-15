@@ -68,13 +68,5 @@ struct Base64View: View {
         )
         .onChange(of: vm.isEncoding) { _, _ in vm.process() }
         .onChange(of: vm.urlSafe) { _, _ in if !vm.input.isEmpty { vm.process() } }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "lock.doc").foregroundStyle(.tint)
-                    Text("Base64").fontWeight(.semibold)
-                }
-            }
-        }
     }
 }

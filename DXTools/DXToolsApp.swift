@@ -15,8 +15,7 @@ struct DXToolsApp: App {
                     appDelegate.appState = appState
                 }
         }
-        .windowStyle(.titleBar)
-        .windowToolbarStyle(.unified(showsTitle: false))
+        .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 1200, height: 780)
         .commands {
             CommandGroup(replacing: .newItem) {
@@ -98,6 +97,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupMenuBar()
         setupClipboardMonitor()
         setupGlobalHotkey()
+
+        // Register URL handler: dx://tool-name
+        NSAppleEventManager.shared().setEventHandler(
+            self,
+            andSelector: #selector(handleURL(_:withReply:)),
+            forEventClass: AEEventClass(kInternetEventClass),
+            andEventID: AEEventID(kAEGetURL)
+        )
+    }
+
+    @objc func handleURL(_ event: NSAppleEventDescriptor, withReply reply: NSAppleEventDescriptor) {
+        guard let urlString = event.paramDescriptor(forKeyword: AEKeyword(keyDirectObject))?.stringValue,
+              let url = URL(string: urlString),
+              url.scheme == "dx" else { return }
+
+        let toolName = url.host ?? ""
+        let toolMap: [String: Tool] = Dictionary(uniqueKeysWithValues:
+            Tool.allCases.map { tool in
+                let key = tool.rawValue.lowercased()
+                    .replacingOccurrences(of: " ", with: "-")
+                    .replacingOccurrences(of: "→", with: "to")
+                    .replacingOccurrences(of: " ", with: "")
+                return (key, tool)
+            }
+        )
+
+        if let tool = toolMap[toolName] {
+            DispatchQueue.main.async {
+                self.showApp()
+                self.appState?.selectTool(tool)
+            }
+        }
     }
 
     func setupMenuBar() {

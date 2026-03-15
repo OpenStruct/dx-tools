@@ -44,7 +44,7 @@ class APIRequestViewModel {
     }
 
     func addHeader() {
-        request.headers.append(("", "", true))
+        request.headers.append(APIRequestService.KeyValueItem())
     }
 
     func removeHeader(at index: Int) {
@@ -52,7 +52,7 @@ class APIRequestViewModel {
     }
 
     func addParam() {
-        request.queryParams.append(("", "", true))
+        request.queryParams.append(APIRequestService.KeyValueItem())
     }
 
     func removeParam(at index: Int) {
@@ -74,7 +74,7 @@ class APIRequestViewModel {
     func loadSample() {
         request.method = "GET"
         request.url = "https://jsonplaceholder.typicode.com/users/1"
-        request.headers = [("Accept", "application/json", true)]
+        request.headers = [APIRequestService.KeyValueItem("Accept", "application/json")]
         send()
     }
 
@@ -84,7 +84,7 @@ class APIRequestViewModel {
             parts.append("-X \(request.method)")
         }
         parts.append("'\(request.url)'")
-        for h in request.headers where h.enabled {
+        for h in request.headers where h.enabled && !h.key.isEmpty {
             parts.append("-H '\(h.key): \(h.value)'")
         }
         if !request.body.isEmpty {

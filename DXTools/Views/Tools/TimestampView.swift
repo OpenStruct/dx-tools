@@ -7,8 +7,7 @@ struct TimestampView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Input bar
-            HStack(spacing: 12) {
+            ToolHeader(title: "Timestamp Converter", icon: "clock.fill") {
                 Image(systemName: "clock.fill").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
                 TextField("Epoch, ISO 8601, RFC 2822, or date string…", text: $vm.input)
                     .textFieldStyle(.plain)
@@ -20,9 +19,7 @@ struct TimestampView: View {
                 DXButton(title: "Now", icon: "clock.fill", style: .secondary) { vm.now() }
                 DXButton(title: "Convert", icon: "arrow.right.circle.fill") { vm.convert() }
             }
-            .padding(.horizontal, 16).padding(.vertical, 12)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             if let error = vm.errorMessage {
                 VStack { Spacer()
@@ -93,14 +90,6 @@ struct TimestampView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "clock.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Timestamp Converter").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func valueCard(_ label: String, _ value: String, _ color: Color) -> some View {

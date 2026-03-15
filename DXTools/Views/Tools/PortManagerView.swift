@@ -8,9 +8,48 @@ struct PortManagerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // ── Top Bar ──
-            topBar
-            Rectangle().fill(t.border).frame(height: 1)
+            ToolHeader(title: "Port Manager", icon: "network") {
+                // Search
+                HStack(spacing: 6) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(t.textTertiary)
+                    TextField("Search…", text: $vm.searchQuery)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 11, weight: .medium))
+                    if !vm.searchQuery.isEmpty {
+                        Button { vm.searchQuery = "" } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 9)).foregroundStyle(t.textTertiary)
+                        }.buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 8).padding(.vertical, 4)
+                .background(t.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .frame(maxWidth: 180)
+
+                HStack(spacing: 1) {
+                    filterPill("Listening", isActive: vm.showListeningOnly) {
+                        vm.showListeningOnly = true; vm.refresh()
+                    }
+                    filterPill("All", isActive: !vm.showListeningOnly) {
+                        vm.showListeningOnly = false; vm.refresh()
+                    }
+                }
+                .padding(2).background(t.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+
+                Spacer()
+
+                HStack(spacing: 10) {
+                    statPill("\(vm.portStats.total)", "Ports", t.accent)
+                    statPill("\(vm.portStats.dev)", "Dev", t.info)
+                    statPill("\(vm.portStats.db)", "DB", t.warning)
+                }
+
+                DXButton(title: "Refresh", icon: "arrow.clockwise", style: .secondary) { vm.refresh() }
+            }
 
             // ── Content ──
             HSplitView {
@@ -25,17 +64,6 @@ struct PortManagerView: View {
         }
         .background(t.bg)
         .onAppear { vm.refresh() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "network")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(t.accent)
-                    Text("Port Manager")
-                        .font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
         // Kill confirmation
         .alert("Kill Process", isPresented: Binding(
             get: { vm.killConfirmation != nil },
@@ -57,65 +85,6 @@ struct PortManagerView: View {
 
     // MARK: - Top Bar
 
-    var topBar: some View {
-        HStack(spacing: 12) {
-            // Search
-            HStack(spacing: 6) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(t.textTertiary)
-                TextField("Search ports, processes…", text: $vm.searchQuery)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 12, weight: .medium))
-                if !vm.searchQuery.isEmpty {
-                    Button { vm.searchQuery = "" } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 10))
-                            .foregroundStyle(t.textTertiary)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 7)
-            .background(t.glass)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(t.border, lineWidth: 1))
-            .frame(maxWidth: 260)
-
-            // Filter toggle
-            HStack(spacing: 1) {
-                filterPill("Listening", isActive: vm.showListeningOnly) {
-                    vm.showListeningOnly = true; vm.refresh()
-                }
-                filterPill("All", isActive: !vm.showListeningOnly) {
-                    vm.showListeningOnly = false; vm.refresh()
-                }
-            }
-            .padding(2)
-            .background(t.glass)
-            .clipShape(RoundedRectangle(cornerRadius: 7))
-            .overlay(RoundedRectangle(cornerRadius: 7).stroke(t.border, lineWidth: 0.5))
-
-            Spacer()
-
-            // Stats
-            HStack(spacing: 14) {
-                statPill("\(vm.portStats.total)", "Ports", t.accent)
-                statPill("\(vm.portStats.dev)", "Dev", t.info)
-                statPill("\(vm.portStats.db)", "DB", t.warning)
-            }
-
-            // Refresh
-            DXButton(title: "Refresh", icon: "arrow.clockwise", style: .secondary) {
-                vm.refresh()
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial.opacity(0.3))
-        .background(t.glass)
-    }
 
     // MARK: - Port List
 
@@ -252,39 +221,52 @@ struct PortManagerView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 8)
 
-            // Actions
-            HStack(spacing: 4) {
-                SmallIconButton(title: "", icon: "doc.on.doc") {
+            // Actions — only visible on hover or selection
+            HStack(spacing: 6) {
+                Button {
                     vm.copyProcessInfo(proc)
                     appState.showToast("Copied", icon: "doc.on.doc")
+                } label: {
+                    Image(systemName: "doc.on.doc")
+                        .font(.system(size: 9.5, weight: .semibold))
+                        .foregroundStyle(t.textTertiary)
+                        .frame(width: 24, height: 24)
+                        .background(t.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(t.border, lineWidth: 0.5))
                 }
+                .buttonStyle(.plain)
 
                 Button {
                     vm.killConfirmation = proc
                 } label: {
-                    HStack(spacing: 3) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 9, weight: .bold))
+                    HStack(spacing: 4) {
+                        Image(systemName: "stop.fill")
+                            .font(.system(size: 7, weight: .bold))
                         Text("Kill")
-                            .font(.system(size: 9.5, weight: .bold, design: .rounded))
+                            .font(.system(size: 10, weight: .bold, design: .rounded))
                     }
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
+                    .foregroundStyle(proc.isSystemProcess ? t.textGhost : t.error)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(proc.isSystemProcess ? t.textGhost : t.error)
+                        RoundedRectangle(cornerRadius: 7)
+                            .fill(proc.isSystemProcess ? t.surface : t.error.opacity(0.08))
                     )
-                    .opacity(proc.isSystemProcess ? 0.5 : 1)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 7)
+                            .stroke(proc.isSystemProcess ? t.border : t.error.opacity(0.2), lineWidth: 0.5)
+                    )
                 }
                 .buttonStyle(.plain)
                 .disabled(proc.isSystemProcess)
-                .help(proc.isSystemProcess ? "System process — cannot kill" : "Kill PID \(proc.pid)")
+                .help(proc.isSystemProcess ? "System process" : "Kill PID \(proc.pid)")
             }
-            .frame(width: 80, alignment: .trailing)
+            .opacity(isHovered || isSelected ? 1 : 0.3)
+            .frame(width: 100, alignment: .trailing)
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 8)
+        .padding(.vertical, 7)
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(isSelected ? t.accent.opacity(0.06) : isHovered ? t.surfaceHover.opacity(0.5) : Color.clear)
@@ -292,7 +274,7 @@ struct PortManagerView: View {
         .contentShape(Rectangle())
         .onTapGesture { vm.selectedProcess = proc }
         .onHover { isHovered = $0 }
-        .animation(.easeOut(duration: 0.1), value: isHovered)
+        .animation(.easeOut(duration: 0.15), value: isHovered)
         .padding(.horizontal, 4)
     }
 
@@ -339,12 +321,18 @@ struct PortManagerView: View {
                     Button {
                         vm.killPort()
                     } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundStyle(.white)
-                            .padding(8)
-                            .background(t.error)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        HStack(spacing: 4) {
+                            Image(systemName: "stop.fill")
+                                .font(.system(size: 8, weight: .bold))
+                            Text("Kill")
+                                .font(.system(size: 11, weight: .bold, design: .rounded))
+                        }
+                        .foregroundStyle(t.error)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background(t.error.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(t.error.opacity(0.2), lineWidth: 0.5))
                     }
                     .buttonStyle(.plain)
                 }
@@ -400,19 +388,27 @@ struct PortManagerView: View {
                                         vm.checkPort = "\(port)"
                                         vm.killPort()
                                     } label: {
-                                        Text("Kill")
-                                            .font(.system(size: 9, weight: .bold, design: .rounded))
-                                            .foregroundStyle(t.error)
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 3)
-                                            .background(t.error.opacity(0.1))
-                                            .clipShape(Capsule())
+                                        HStack(spacing: 3) {
+                                            Image(systemName: "stop.fill")
+                                                .font(.system(size: 6, weight: .bold))
+                                            Text("Kill")
+                                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                        }
+                                        .foregroundStyle(t.error)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(t.error.opacity(0.08))
+                                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(t.error.opacity(0.15), lineWidth: 0.5))
                                     }
                                     .buttonStyle(.plain)
                                 } else {
-                                    Text("Free")
-                                        .font(.system(size: 9, weight: .semibold, design: .rounded))
-                                        .foregroundStyle(t.success.opacity(0.6))
+                                    HStack(spacing: 3) {
+                                        Circle().fill(t.success).frame(width: 4, height: 4)
+                                        Text("Free")
+                                            .font(.system(size: 9, weight: .semibold, design: .rounded))
+                                            .foregroundStyle(t.success.opacity(0.7))
+                                    }
                                 }
                             }
                             .padding(.horizontal, 10)

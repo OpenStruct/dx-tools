@@ -7,8 +7,7 @@ struct PasswordGeneratorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // ── Toolbar ──
-            EditorPaneHeader(title: "Password Generator", icon: "lock.shield.fill") {
+            ToolHeader(title: "Password Generator", icon: "lock.shield.fill") {
                 HStack(spacing: 1) {
                     modeButton("Password", isActive: !vm.isPhrase) { vm.isPhrase = false; vm.generate() }
                     modeButton("Passphrase", isActive: vm.isPhrase) { vm.isPhrase = true; vm.generate() }
@@ -25,7 +24,6 @@ struct PasswordGeneratorView: View {
 
                 DXButton(title: "Generate", icon: "arrow.clockwise") { vm.generate() }
             }
-            Rectangle().fill(t.border).frame(height: 1)
 
             // ── Controls ──
             HStack(spacing: 20) {
@@ -113,14 +111,6 @@ struct PasswordGeneratorView: View {
             .background(t.glass)
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "lock.shield.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Password Generator").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func passwordRow(index: Int, password: GeneratedPassword) -> some View {

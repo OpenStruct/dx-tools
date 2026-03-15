@@ -5,6 +5,8 @@ struct UnixPermView: View {
     @Environment(\.theme) private var t
 
     var body: some View {
+        VStack(spacing: 0) {
+            ToolHeader(title: "Unix Permissions", icon: "lock.shield.fill")
         ScrollView {
             VStack(spacing: 20) {
                 // Input
@@ -102,12 +104,7 @@ struct UnixPermView: View {
             .padding(24)
         }
         .background(t.bg)
-        .toolbar { ToolbarItem(placement: .principal) {
-            HStack(spacing: 7) {
-                Image(systemName: "lock.shield").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                Text("Unix Permissions").font(.system(size: 13, weight: .bold, design: .rounded))
-            }
-        }}
+        } // VStack
     }
 
     func permColumn(_ title: String, r: Binding<Bool>, w: Binding<Bool>, x: Binding<Bool>) -> some View {

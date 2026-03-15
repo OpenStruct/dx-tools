@@ -49,6 +49,11 @@ enum Tool: String, CaseIterable, Identifiable {
     case docker = "Docker"
     case gitStats = "Git Stats"
     case timestampConverter = "Timestamp Converter"
+    case qrCode = "QR Code Generator"
+    case imageBase64 = "Image Base64"
+    case sqlFormatter = "SQL Formatter"
+    case jsonSchema = "JSON Schema"
+    case httpStatus = "HTTP Status Codes"
 
     var id: String { rawValue }
 
@@ -82,6 +87,11 @@ enum Tool: String, CaseIterable, Identifiable {
         case .docker: return "shippingbox"
         case .gitStats: return "arrow.triangle.branch"
         case .timestampConverter: return "calendar.badge.clock"
+        case .qrCode: return "qrcode"
+        case .imageBase64: return "photo"
+        case .sqlFormatter: return "tablecells"
+        case .jsonSchema: return "checkmark.shield"
+        case .httpStatus: return "number.circle"
         }
     }
 
@@ -98,6 +108,11 @@ enum Tool: String, CaseIterable, Identifiable {
         case .docker: return .devops
         case .gitStats: return .devops
         case .timestampConverter: return .generators
+        case .qrCode: return .generators
+        case .imageBase64: return .encoding
+        case .sqlFormatter: return .text
+        case .jsonSchema: return .json
+        case .httpStatus: return .devops
         }
     }
 
@@ -147,6 +162,11 @@ enum Tool: String, CaseIterable, Identifiable {
         case .docker: return "docker container ps start stop restart logs"
         case .gitStats: return "git branch commit status repository"
         case .timestampConverter: return "timestamp iso rfc epoch date time convert"
+        case .qrCode: return "qr code generate barcode scan"
+        case .imageBase64: return "image base64 encode decode png jpeg photo"
+        case .sqlFormatter: return "sql format query beautify minify database"
+        case .jsonSchema: return "json schema validate validation draft"
+        case .httpStatus: return "http status code 200 404 500 rest api response"
         }
     }
 }

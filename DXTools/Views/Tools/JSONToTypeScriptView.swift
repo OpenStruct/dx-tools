@@ -68,16 +68,6 @@ struct JSONToTypeScriptView: View {
         .onChange(of: vm.rootName) { _, _ in if !vm.input.isEmpty { vm.convert() } }
         .onChange(of: vm.useInterface) { _, _ in if !vm.input.isEmpty { vm.convert() } }
         .onChange(of: vm.readOnly) { _, _ in if !vm.input.isEmpty { vm.convert() } }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "chevron.left.forwardslash.chevron.right")
-                        .foregroundStyle(.tint)
-                    Text("JSON → TypeScript")
-                        .fontWeight(.semibold)
-                }
-            }
-        }
         .overlay {
             if let error = vm.errorMessage {
                 VStack {
