@@ -35,6 +35,8 @@ targets:
       - path: DXTools
       - path: DXTools/Assets.xcassets
         buildPhase: resources
+      - path: DXTools/Resources/AppIcon.icns
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.openstruct.dxtools
