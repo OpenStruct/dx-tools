@@ -101,19 +101,31 @@ jobs:
       - name: Package DMG
         run: |
           APP_PATH="build/DerivedData/Build/Products/Release/DX Tools.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "❌ App not found at: $APP_PATH"
+            find build/DerivedData -name "*.app" -type d 2>/dev/null
+            exit 1
+          fi
+          echo "✅ Found app: $APP_PATH"
+
           mkdir -p build/dmg-staging
-          cp -R "$APP_PATH" build/dmg-staging/
-          ln -s /Applications build/dmg-staging/Applications
+          cp -R "$APP_PATH" "build/dmg-staging/"
+          ln -s /Applications "build/dmg-staging/Applications"
 
           # Set volume icon
-          cp build/AppIcon.icns build/dmg-staging/.VolumeIcon.icns
-          SetFile -a C build/dmg-staging 2>/dev/null || true
+          if [ -f build/AppIcon.icns ]; then
+            cp build/AppIcon.icns "build/dmg-staging/.VolumeIcon.icns"
+            SetFile -a C "build/dmg-staging" 2>/dev/null || true
+          fi
 
           hdiutil create -volname "DX Tools" \
-            -srcfolder build/dmg-staging \
+            -srcfolder "build/dmg-staging" \
             -ov -format UDZO \
-            build/DXTools.dmg
-          rm -rf build/dmg-staging
+            "build/DXTools.dmg"
+          rm -rf "build/dmg-staging"
+
+          ls -la build/DXTools.dmg
+          echo "✅ DMG created: $(du -h build/DXTools.dmg | cut -f1)"
 
       - name: Extract version
         id: version
