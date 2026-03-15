@@ -122,12 +122,16 @@ struct ContentView: View {
         let ext = filename?.components(separatedBy: ".").last?.lowercased()
         let trimmed = content.trimmingCharacters(in: .whitespacesAndNewlines)
 
+        appState.pendingDropContent = content
+
         if ext == "json" || trimmed.first == "{" || trimmed.first == "[" {
             appState.selectTool(.jsonFormatter)
         } else if ext == "env" || filename?.hasPrefix(".env") == true {
             appState.selectTool(.envManager)
         } else if ext == "md" || ext == "markdown" {
             appState.selectTool(.markdownPreview)
+        } else {
+            appState.selectTool(.base64)
         }
 
         appState.showToast("Loaded: \(filename ?? "content")", icon: "doc.fill")

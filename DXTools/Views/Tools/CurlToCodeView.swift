@@ -9,6 +9,7 @@ struct CurlToCodeView: View {
             output: $vm.output,
             inputLanguage: "text",
             outputLanguage: "text",
+            toolId: "curlToCode",
             inputHeader: {
                 EditorPaneHeader(title: "cURL Command", icon: "terminal") {
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.loadSample() }

@@ -10,6 +10,7 @@ struct JSONFormatterView: View {
             output: $vm.output,
             inputLanguage: "json",
             outputLanguage: "json",
+            toolId: "jsonFormatter",
             inputHeader: {
                 EditorPaneHeader(title: "Input", icon: "arrow.down.doc") {
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.loadSample() }

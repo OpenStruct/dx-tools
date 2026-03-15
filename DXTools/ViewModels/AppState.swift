@@ -71,6 +71,9 @@ class AppState {
         Tool.allCases.filter { favorites.contains($0.rawValue) }
     }
 
+    // Dropped file content to pass to tool
+    var pendingDropContent: String?
+
     // Clipboard monitoring
     var lastClipboardContent: String = ""
 
