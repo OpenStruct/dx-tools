@@ -25,5 +25,4 @@ Package.resolved
 __pycache__/
 *.pyc
 
-# App icon generated
-DXTools/Assets.xcassets/AppIcon.appiconset/icon_*.png
+
