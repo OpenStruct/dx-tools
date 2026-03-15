@@ -2,14 +2,27 @@ import Foundation
 
 struct APIRequestService {
 
+    struct KeyValueItem: Identifiable {
+        let id = UUID()
+        var key: String
+        var value: String
+        var enabled: Bool
+
+        init(_ key: String = "", _ value: String = "", _ enabled: Bool = true) {
+            self.key = key
+            self.value = value
+            self.enabled = enabled
+        }
+    }
+
     struct Request {
         var method: String = "GET"
         var url: String = ""
-        var headers: [(key: String, value: String, enabled: Bool)] = [
-            ("Content-Type", "application/json", true)
+        var headers: [KeyValueItem] = [
+            KeyValueItem("Content-Type", "application/json")
         ]
         var body: String = ""
-        var queryParams: [(key: String, value: String, enabled: Bool)] = []
+        var queryParams: [KeyValueItem] = []
     }
 
     struct Response {
@@ -39,7 +52,7 @@ struct APIRequestService {
 
         // Add query params
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true) ?? URLComponents()
-        let enabledParams = request.queryParams.filter(\.enabled)
+        let enabledParams = request.queryParams.filter { $0.enabled && !$0.key.isEmpty }
         if !enabledParams.isEmpty {
             components.queryItems = enabledParams.map { URLQueryItem(name: $0.key, value: $0.value) }
         }
@@ -52,7 +65,7 @@ struct APIRequestService {
         urlRequest.httpMethod = request.method
         urlRequest.timeoutInterval = 30
 
-        for header in request.headers where header.enabled {
+        for header in request.headers where header.enabled && !header.key.isEmpty {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
 
