@@ -5,6 +5,7 @@ struct EnvManagerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Env Manager", icon: "doc.text.magnifyingglass")
             // Mode picker
             HStack(spacing: 16) {
                 Picker("", selection: $vm.mode) {
@@ -42,14 +43,6 @@ struct EnvManagerView: View {
             }
         }
         .background(Color(nsColor: .textBackgroundColor))
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "doc.text.magnifyingglass").foregroundStyle(.tint)
-                    Text("Env Manager").fontWeight(.semibold)
-                }
-            }
-        }
     }
 
     var viewMode: some View {

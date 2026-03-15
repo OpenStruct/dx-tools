@@ -7,6 +7,7 @@ struct JWTDecoderView: View {
         HSplitView {
             // Input
             VStack(spacing: 0) {
+            ToolHeader(title: "JWT Decoder", icon: "key.horizontal.fill")
                 EditorPaneHeader(title: "JWT Token", icon: "key.horizontal") {
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.loadSample() }
                     SmallIconButton(title: "Paste", icon: "doc.on.clipboard") { vm.paste() }
@@ -122,14 +123,6 @@ struct JWTDecoderView: View {
             .frame(minWidth: 300)
         }
         .background(Color(nsColor: .textBackgroundColor))
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "key.horizontal").foregroundStyle(.tint)
-                    Text("JWT Decoder").fontWeight(.semibold)
-                }
-            }
-        }
     }
 
     func expirationBanner(_ status: JWTService.ExpirationStatus) -> some View {

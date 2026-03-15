@@ -5,6 +5,7 @@ struct LoremGeneratorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Lorem Generator", icon: "wand.and.stars")
             // Controls
             HStack(spacing: 16) {
                 Picker("", selection: $vm.mode) {
@@ -76,13 +77,5 @@ struct LoremGeneratorView: View {
         }
         .background(Color(nsColor: .textBackgroundColor))
         .onChange(of: vm.mode) { _, _ in vm.generate() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "wand.and.stars").foregroundStyle(.tint)
-                    Text("Lorem Generator").fontWeight(.semibold)
-                }
-            }
-        }
     }
 }

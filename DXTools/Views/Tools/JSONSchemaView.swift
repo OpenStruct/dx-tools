@@ -7,6 +7,7 @@ struct JSONSchemaView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "JSON Schema", icon: "checkmark.shield.fill")
             // Toolbar
             HStack(spacing: 8) {
                 if let r = vm.result {
@@ -74,13 +75,5 @@ struct JSONSchemaView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "checkmark.shield.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("JSON Schema Validator").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 }

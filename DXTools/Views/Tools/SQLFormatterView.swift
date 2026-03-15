@@ -44,13 +44,5 @@ struct SQLFormatterView: View {
             }
         )
         .onChange(of: vm.indent) { _, _ in vm.format() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "tablecells").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("SQL Formatter").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 }

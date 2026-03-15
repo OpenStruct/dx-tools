@@ -6,6 +6,8 @@ struct NetworkView: View {
     @Environment(AppState.self) private var appState
 
     var body: some View {
+        VStack(spacing: 0) {
+            ToolHeader(title: "Network Info", icon: "wifi")
         ScrollView {
             VStack(spacing: 20) {
                 // Network info section
@@ -146,12 +148,7 @@ struct NetworkView: View {
         }
         .background(t.bg)
         .onAppear { vm.loadNetworkInfo() }
-        .toolbar { ToolbarItem(placement: .principal) {
-            HStack(spacing: 7) {
-                Image(systemName: "network").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                Text("Network Info").font(.system(size: 13, weight: .bold, design: .rounded))
-            }
-        }}
+        } // VStack
     }
 
     func infoCard(_ title: String, _ value: String, _ icon: String, _ color: Color) -> some View {

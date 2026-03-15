@@ -7,6 +7,7 @@ struct PasswordGeneratorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Password Generator", icon: "lock.shield.fill")
             // ── Toolbar ──
             EditorPaneHeader(title: "Password Generator", icon: "lock.shield.fill") {
                 HStack(spacing: 1) {
@@ -113,14 +114,6 @@ struct PasswordGeneratorView: View {
             .background(t.glass)
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "lock.shield.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Password Generator").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func passwordRow(index: Int, password: GeneratedPassword) -> some View {

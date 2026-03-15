@@ -7,6 +7,7 @@ struct ColorConverterView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Color Converter", icon: "paintpalette.fill")
             // ── Input Bar ──
             HStack(spacing: 12) {
                 Image(systemName: "paintpalette.fill")
@@ -156,14 +157,6 @@ struct ColorConverterView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "paintpalette.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Color Converter").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func valueCard(_ label: String, _ value: String, _ color: Color) -> some View {

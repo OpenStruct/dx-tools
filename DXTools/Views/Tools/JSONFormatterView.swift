@@ -79,11 +79,6 @@ struct JSONFormatterView: View {
         .onChange(of: vm.indentStyle) { _, _ in
             if !vm.input.isEmpty { vm.format() }
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                toolbarTitle("text.alignleft", "JSON Formatter")
-            }
-        }
         .overlay(alignment: .bottom) {
             if let error = vm.errorMessage {
                 errorBanner(error) { vm.errorMessage = nil }

@@ -8,6 +8,7 @@ struct HashGeneratorView: View {
         HSplitView {
             // Input
             VStack(spacing: 0) {
+            ToolHeader(title: "Hash Generator", icon: "number.circle.fill")
                 EditorPaneHeader(title: "Input", icon: "arrow.down.doc") {
                     SmallIconButton(title: "File", icon: "doc") { showFileImporter = true }
                     SmallIconButton(title: "Clear", icon: "trash") { vm.clear() }
@@ -84,14 +85,6 @@ struct HashGeneratorView: View {
         .fileImporter(isPresented: $showFileImporter, allowedContentTypes: [.item]) { result in
             if case .success(let url) = result {
                 vm.hashFile(url: url)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "number.circle").foregroundStyle(.tint)
-                    Text("Hash Generator").fontWeight(.semibold)
-                }
             }
         }
     }

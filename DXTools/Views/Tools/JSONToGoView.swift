@@ -67,16 +67,6 @@ struct JSONToGoView: View {
         .onChange(of: vm.rootName) { _, _ in if !vm.input.isEmpty { vm.convert() } }
         .onChange(of: vm.addOmitempty) { _, _ in if !vm.input.isEmpty { vm.convert() } }
         .onChange(of: vm.usePointers) { _, _ in if !vm.input.isEmpty { vm.convert() } }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "arrow.right.circle")
-                        .foregroundStyle(.tint)
-                    Text("JSON → Go Struct")
-                        .fontWeight(.semibold)
-                }
-            }
-        }
         .overlay {
             if let error = vm.errorMessage {
                 VStack {

@@ -13,6 +13,7 @@ struct APIRequestView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "API Request", icon: "paperplane.fill")
             // URL bar
             HStack(spacing: 8) {
                 // Method picker
@@ -215,14 +216,6 @@ struct APIRequestView: View {
             }
         }
         .background(theme.editorBg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "paperplane").foregroundStyle(theme.accent)
-                    Text("API Request Builder").fontWeight(.semibold)
-                }
-            }
-        }
     }
 
     @ViewBuilder

@@ -7,6 +7,7 @@ struct QRCodeView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "QR Code Generator", icon: "qrcode")
             HStack(spacing: 12) {
                 Picker("Error Correction", selection: $vm.correctionLevel) {
                     ForEach(QRCodeService.CorrectionLevel.allCases, id: \.self) { level in
@@ -88,13 +89,5 @@ struct QRCodeView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "qrcode").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("QR Code Generator").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 }

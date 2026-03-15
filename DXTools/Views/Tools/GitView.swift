@@ -6,6 +6,7 @@ struct GitView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Git Stats", icon: "arrow.triangle.branch")
             // Path bar
             HStack(spacing: 12) {
                 Image(systemName: "folder.fill").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
@@ -116,14 +117,6 @@ struct GitView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "arrow.triangle.branch").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Git Stats").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func statCard(_ label: String, _ value: String, _ icon: String, _ color: Color) -> some View {

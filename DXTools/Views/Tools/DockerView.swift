@@ -7,6 +7,7 @@ struct DockerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Docker", icon: "shippingbox.fill")
             // Toolbar
             HStack(spacing: 12) {
                 Image(systemName: "shippingbox.fill").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
@@ -92,14 +93,6 @@ struct DockerView: View {
         }
         .background(t.bg)
         .onAppear { vm.refresh() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "shippingbox.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Docker").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func containerRow(_ c: DockerService.Container) -> some View {

@@ -7,6 +7,7 @@ struct ImageBase64View: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Image Base64", icon: "photo.fill")
             // Toolbar
             HStack(spacing: 12) {
                 Picker("Mode", selection: $vm.mode) {
@@ -44,14 +45,6 @@ struct ImageBase64View: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "photo.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Image Base64").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     var encodeView: some View {

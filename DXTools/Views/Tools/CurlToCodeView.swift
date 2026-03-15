@@ -61,13 +61,5 @@ struct CurlToCodeView: View {
             }
         )
         .onChange(of: vm.selectedLanguage) { _, _ in if !vm.input.isEmpty { vm.convert() } }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "terminal").foregroundStyle(.tint)
-                    Text("cURL → Code").fontWeight(.semibold)
-                }
-            }
-        }
     }
 }

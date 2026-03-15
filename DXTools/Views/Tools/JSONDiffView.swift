@@ -5,6 +5,7 @@ struct JSONDiffView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "JSON Diff", icon: "arrow.left.arrow.right")
             // Inputs
             HSplitView {
                 VStack(spacing: 0) {
@@ -80,14 +81,6 @@ struct JSONDiffView: View {
             }
         }
         .background(Color(nsColor: .textBackgroundColor))
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "arrow.left.arrow.right").foregroundStyle(.tint)
-                    Text("JSON Diff").fontWeight(.semibold)
-                }
-            }
-        }
     }
 
     func diffEntryRow(_ entry: JSONDiffService.DiffEntry) -> some View {

@@ -5,6 +5,7 @@ struct UUIDGeneratorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "UUID Generator", icon: "dice.fill")
             // Controls bar
             HStack(spacing: 16) {
                 HStack(spacing: 4) {
@@ -115,13 +116,5 @@ struct UUIDGeneratorView: View {
         .background(Color(nsColor: .textBackgroundColor))
         .onChange(of: vm.uppercase) { _, _ in vm.generate() }
         .onChange(of: vm.compact) { _, _ in vm.generate() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "dice").foregroundStyle(.tint)
-                    Text("UUID Generator").fontWeight(.semibold)
-                }
-            }
-        }
     }
 }

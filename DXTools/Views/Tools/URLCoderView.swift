@@ -6,6 +6,7 @@ struct URLCoderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "URL Encoder", icon: "link")
             // Toolbar
             EditorPaneHeader(title: "URL Encoder / Decoder", icon: "link") {
                 HStack(spacing: 1) {
@@ -74,7 +75,6 @@ struct URLCoderView: View {
             }
         }
         .background(t.editorBg)
-        .toolbar { ToolbarItem(placement: .principal) { toolTitle("link", "URL Encoder") } }
     }
 
     func urlPartsView(_ parts: URLCoderService.URLParts) -> some View {

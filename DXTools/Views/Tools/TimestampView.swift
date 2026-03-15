@@ -7,6 +7,7 @@ struct TimestampView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Timestamp Converter", icon: "clock.fill")
             // Input bar
             HStack(spacing: 12) {
                 Image(systemName: "clock.fill").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
@@ -93,14 +94,6 @@ struct TimestampView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "clock.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Timestamp Converter").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func valueCard(_ label: String, _ value: String, _ color: Color) -> some View {

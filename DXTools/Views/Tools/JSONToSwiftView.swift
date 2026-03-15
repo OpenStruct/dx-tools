@@ -66,16 +66,6 @@ struct JSONToSwiftView: View {
         .onChange(of: vm.rootName) { _, _ in if !vm.input.isEmpty { vm.convert() } }
         .onChange(of: vm.useLetProperties) { _, _ in if !vm.input.isEmpty { vm.convert() } }
         .onChange(of: vm.addCodingKeys) { _, _ in if !vm.input.isEmpty { vm.convert() } }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "swift")
-                        .foregroundStyle(.tint)
-                    Text("JSON → Swift")
-                        .fontWeight(.semibold)
-                }
-            }
-        }
         .overlay {
             if let error = vm.errorMessage {
                 VStack {

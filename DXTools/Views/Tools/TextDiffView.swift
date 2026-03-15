@@ -6,6 +6,7 @@ struct TextDiffView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Text Diff", icon: "arrow.left.arrow.right.square")
             // Stats bar
             if let r = vm.result {
                 HStack(spacing: 16) {
@@ -93,14 +94,6 @@ struct TextDiffView: View {
             .background(t.glass)
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "arrow.left.arrow.right").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("Text Diff").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func diffLine(_ line: TextDiffService.DiffLine) -> some View {

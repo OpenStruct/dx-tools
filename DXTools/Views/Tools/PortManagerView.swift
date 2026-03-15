@@ -8,6 +8,7 @@ struct PortManagerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Port Manager", icon: "network")
             // ── Top Bar ──
             topBar
             Rectangle().fill(t.border).frame(height: 1)
@@ -25,17 +26,6 @@ struct PortManagerView: View {
         }
         .background(t.bg)
         .onAppear { vm.refresh() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "network")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(t.accent)
-                    Text("Port Manager")
-                        .font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
         // Kill confirmation
         .alert("Kill Process", isPresented: Binding(
             get: { vm.killConfirmation != nil },

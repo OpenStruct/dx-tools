@@ -12,6 +12,7 @@ struct HTTPStatusView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "HTTP Status Codes", icon: "number.circle.fill")
             // Search bar
             HStack(spacing: 12) {
                 Image(systemName: "magnifyingglass").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
@@ -103,14 +104,6 @@ struct HTTPStatusView: View {
             }
         }
         .background(t.bg)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 7) {
-                    Image(systemName: "number.circle.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(t.accent)
-                    Text("HTTP Status Codes").font(.system(size: 13, weight: .bold, design: .rounded))
-                }
-            }
-        }
     }
 
     func codeRow(_ code: HTTPStatusService.StatusCode) -> some View {

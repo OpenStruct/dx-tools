@@ -5,6 +5,7 @@ struct RegexTesterView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            ToolHeader(title: "Regex Tester", icon: "textformat.abc")
             // Pattern bar
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
@@ -189,13 +190,5 @@ struct RegexTesterView: View {
         .onChange(of: vm.flags.caseInsensitive) { _, _ in vm.test() }
         .onChange(of: vm.flags.multiline) { _, _ in vm.test() }
         .onChange(of: vm.flags.global) { _, _ in vm.test() }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "textformat.abc").foregroundStyle(.tint)
-                    Text("Regex Tester").fontWeight(.semibold)
-                }
-            }
-        }
     }
 }
