@@ -393,71 +393,8 @@ footer .f-links a{color:var(--text2)}
   <h2 class="section-title">What's New</h2>
   <p class="section-sub">Every release, every fix, every improvement.</p>
 
-  <div class="changelog-timeline">
-    <div class="cl-entry latest">
-      <div class="cl-version">
-        <span class="v">v2.2.0</span>
-        <span class="badge-new">Latest</span>
-        <span class="date">March 15, 2026</span>
-      </div>
-      <ul class="cl-list">
-        <li><span class="cl-icon cl-fix">●</span> API Request Builder — params now correctly applied to requests</li>
-        <li><span class="cl-icon cl-improve">◆</span> Port Manager — redesigned kill buttons with outline style, hover reveal</li>
-        <li><span class="cl-icon cl-improve">◆</span> QR Code — shorter correction level picker (L/M/Q/H segments)</li>
-        <li><span class="cl-icon cl-improve">◆</span> All 33 tools use single clean ToolHeader — no more double headers</li>
-        <li><span class="cl-icon cl-fix">●</span> 300 tests, 0 failures across 25 test suites</li>
-      </ul>
-    </div>
-
-    <div class="cl-entry">
-      <div class="cl-version">
-        <span class="v">v2.1.0</span>
-        <span class="date">March 15, 2026</span>
-      </div>
-      <ul class="cl-list">
-        <li><span class="cl-icon cl-new">✦</span> QR Code Generator — 4 error correction levels, copy/save PNG</li>
-        <li><span class="cl-icon cl-new">✦</span> Image Base64 — encode images to base64/data URI, decode back</li>
-        <li><span class="cl-icon cl-new">✦</span> SQL Formatter — format & minify SQL, 3 indent styles</li>
-        <li><span class="cl-icon cl-new">✦</span> JSON Schema Validator — type, required, min/max, pattern, arrays</li>
-        <li><span class="cl-icon cl-new">✦</span> HTTP Status Codes — searchable reference, color-coded categories</li>
-        <li><span class="cl-icon cl-new">✦</span> Input syntax highlighting — live JSON/SQL coloring in editor</li>
-        <li><span class="cl-icon cl-new">✦</span> History panel — browse & restore past inputs per tool</li>
-        <li><span class="cl-icon cl-new">✦</span> URL handler — <code>dx://tool-name</code> opens app to specific tool</li>
-        <li><span class="cl-icon cl-new">✦</span> Auto-update checker — checks GitHub Releases on launch</li>
-        <li><span class="cl-icon cl-improve">◆</span> Custom app icon — orange "DX" monogram on dark background</li>
-        <li><span class="cl-icon cl-improve">◆</span> Settings view with font size, indent style, theme toggle</li>
-        <li><span class="cl-icon cl-improve">◆</span> Onboarding — 3-screen first-launch walkthrough</li>
-        <li><span class="cl-icon cl-improve">◆</span> Command Palette — ⌘K overlay with fuzzy search</li>
-      </ul>
-    </div>
-
-    <div class="cl-entry">
-      <div class="cl-version">
-        <span class="v">v2.0.0</span>
-        <span class="date">March 15, 2026</span>
-      </div>
-      <ul class="cl-list">
-        <li><span class="cl-icon cl-new">✦</span> 23 developer tools in one native macOS app</li>
-        <li><span class="cl-icon cl-new">✦</span> Port Manager, Network Info, URL Encoder, Unix Permissions, Cron Parser</li>
-        <li><span class="cl-icon cl-new">✦</span> SSH Key Generator, Docker Manager, Git Stats, Timestamp Converter, Text Diff</li>
-        <li><span class="cl-icon cl-new">✦</span> API Request Builder, smart clipboard, menu bar, CLI companion</li>
-        <li><span class="cl-icon cl-improve">◆</span> Pro code editor, dark/light theme, favorites system</li>
-      </ul>
-    </div>
-
-    <div class="cl-entry">
-      <div class="cl-version">
-        <span class="v">v1.0.0</span>
-        <span class="date">Initial Release</span>
-      </div>
-      <ul class="cl-list">
-        <li><span class="cl-icon cl-new">✦</span> JSON Formatter, JSON → Go/Swift/TypeScript, JSON Diff</li>
-        <li><span class="cl-icon cl-new">✦</span> JWT Decoder, Base64, Hash Generator</li>
-        <li><span class="cl-icon cl-new">✦</span> UUID Generator, Color Converter, Epoch Converter</li>
-        <li><span class="cl-icon cl-new">✦</span> Password Generator, Env Manager</li>
-        <li><span class="cl-icon cl-new">✦</span> cURL → Code, Regex Tester, Markdown Preview, Lorem Generator</li>
-      </ul>
-    </div>
+  <div class="changelog-timeline" id="changelog-timeline">
+    <div class="cl-entry"><div class="cl-version"><span class="v" style="color:var(--text3)">Loading releases…</span></div></div>
   </div>
 </section>
 
@@ -568,29 +505,88 @@ function copyCmd(el, cmd) {
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-// Fetch latest release info from GitHub API
-async function fetchRelease() {
+// Classify a changelog line as new/improve/fix
+function classifyLine(line) {
+  const l = line.toLowerCase();
+  if (l.startsWith('- feat') || l.includes('new tool') || l.includes('added') || l.match(/^- \*\*\w.*\*\* —.*new/))
+    return 'new';
+  if (l.startsWith('- fix') || l.includes('bug') || l.includes('fixed') || l.includes('hotfix'))
+    return 'fix';
+  return 'improve';
+}
+
+function lineIcon(type) {
+  if (type === 'new') return '<span class="cl-icon cl-new">✦</span>';
+  if (type === 'fix') return '<span class="cl-icon cl-fix">●</span>';
+  return '<span class="cl-icon cl-improve">◆</span>';
+}
+
+// Parse release body into clean bullet points
+function parseBody(body) {
+  if (!body) return [];
+  return body.split('\n')
+    .map(l => l.trim())
+    .filter(l => l.startsWith('- ') || l.startsWith('* '))
+    .map(l => l.replace(/^[-*]\s+/, '').replace(/\*\*/g, ''))
+    .filter(l => l.length > 0 && !l.startsWith('#') && !l.startsWith('```'));
+}
+
+// Format date
+function fmtDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+// Fetch all releases and render changelog + hero
+async function fetchReleases() {
   try {
-    const res = await fetch('https://api.github.com/repos/OpenStruct/dx-tools/releases/latest');
+    const res = await fetch('https://api.github.com/repos/OpenStruct/dx-tools/releases?per_page=20');
     if (!res.ok) return;
-    const data = await res.json();
+    const releases = await res.json();
+    if (!releases.length) return;
 
-    // Update version badge
+    // Update hero version
+    const latest = releases[0];
     const ver = document.getElementById('hero-version');
-    if (ver && data.tag_name) ver.textContent = data.tag_name;
+    if (ver) ver.textContent = latest.tag_name;
 
-    // Update download link to DMG asset
-    const dmg = data.assets?.find(a => a.name.endsWith('.dmg'));
+    // Update download button
+    const dmg = latest.assets?.find(a => a.name.endsWith('.dmg'));
     if (dmg) {
       const btn = document.getElementById('dl-btn-main');
       if (btn) btn.href = dmg.browser_download_url;
-
       const size = document.getElementById('dl-size');
       if (size) size.textContent = (dmg.size / 1024 / 1024).toFixed(1) + ' MB';
     }
-  } catch (e) { /* silently fail, defaults work */ }
+
+    // Render changelog
+    const timeline = document.getElementById('changelog-timeline');
+    if (!timeline) return;
+
+    timeline.innerHTML = releases.map((rel, i) => {
+      const isLatest = i === 0;
+      const lines = parseBody(rel.body);
+      const bullets = lines.length > 0
+        ? lines.map(l => {
+            const type = classifyLine('- ' + l);
+            return `<li>${lineIcon(type)} ${l}</li>`;
+          }).join('')
+        : `<li>${lineIcon('new')} ${rel.name || rel.tag_name}</li>`;
+
+      return `
+        <div class="cl-entry${isLatest ? ' latest' : ''}">
+          <div class="cl-version">
+            <span class="v">${rel.tag_name}</span>
+            ${isLatest ? '<span class="badge-new">Latest</span>' : ''}
+            <span class="date">${fmtDate(rel.published_at || rel.created_at)}</span>
+          </div>
+          <ul class="cl-list">${bullets}</ul>
+        </div>`;
+    }).join('');
+
+  } catch (e) { /* silently fail */ }
 }
-fetchRelease();
+fetchReleases();
 </script>
 </body>
 </html>
