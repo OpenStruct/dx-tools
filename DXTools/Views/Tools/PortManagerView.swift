@@ -8,10 +8,48 @@ struct PortManagerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "Port Manager", icon: "network")
-            // ── Top Bar ──
-            topBar
-            Rectangle().fill(t.border).frame(height: 1)
+            ToolHeader(title: "Port Manager", icon: "network") {
+                // Search
+                HStack(spacing: 6) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(t.textTertiary)
+                    TextField("Search…", text: $vm.searchQuery)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 11, weight: .medium))
+                    if !vm.searchQuery.isEmpty {
+                        Button { vm.searchQuery = "" } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 9)).foregroundStyle(t.textTertiary)
+                        }.buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 8).padding(.vertical, 4)
+                .background(t.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .frame(maxWidth: 180)
+
+                HStack(spacing: 1) {
+                    filterPill("Listening", isActive: vm.showListeningOnly) {
+                        vm.showListeningOnly = true; vm.refresh()
+                    }
+                    filterPill("All", isActive: !vm.showListeningOnly) {
+                        vm.showListeningOnly = false; vm.refresh()
+                    }
+                }
+                .padding(2).background(t.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+
+                Spacer()
+
+                HStack(spacing: 10) {
+                    statPill("\(vm.portStats.total)", "Ports", t.accent)
+                    statPill("\(vm.portStats.dev)", "Dev", t.info)
+                    statPill("\(vm.portStats.db)", "DB", t.warning)
+                }
+
+                DXButton(title: "Refresh", icon: "arrow.clockwise", style: .secondary) { vm.refresh() }
+            }
 
             // ── Content ──
             HSplitView {
@@ -47,65 +85,6 @@ struct PortManagerView: View {
 
     // MARK: - Top Bar
 
-    var topBar: some View {
-        HStack(spacing: 12) {
-            // Search
-            HStack(spacing: 6) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(t.textTertiary)
-                TextField("Search ports, processes…", text: $vm.searchQuery)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 12, weight: .medium))
-                if !vm.searchQuery.isEmpty {
-                    Button { vm.searchQuery = "" } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 10))
-                            .foregroundStyle(t.textTertiary)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 7)
-            .background(t.glass)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(t.border, lineWidth: 1))
-            .frame(maxWidth: 260)
-
-            // Filter toggle
-            HStack(spacing: 1) {
-                filterPill("Listening", isActive: vm.showListeningOnly) {
-                    vm.showListeningOnly = true; vm.refresh()
-                }
-                filterPill("All", isActive: !vm.showListeningOnly) {
-                    vm.showListeningOnly = false; vm.refresh()
-                }
-            }
-            .padding(2)
-            .background(t.glass)
-            .clipShape(RoundedRectangle(cornerRadius: 7))
-            .overlay(RoundedRectangle(cornerRadius: 7).stroke(t.border, lineWidth: 0.5))
-
-            Spacer()
-
-            // Stats
-            HStack(spacing: 14) {
-                statPill("\(vm.portStats.total)", "Ports", t.accent)
-                statPill("\(vm.portStats.dev)", "Dev", t.info)
-                statPill("\(vm.portStats.db)", "DB", t.warning)
-            }
-
-            // Refresh
-            DXButton(title: "Refresh", icon: "arrow.clockwise", style: .secondary) {
-                vm.refresh()
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial.opacity(0.3))
-        .background(t.glass)
-    }
 
     // MARK: - Port List
 

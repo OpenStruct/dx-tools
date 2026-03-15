@@ -7,16 +7,10 @@ struct ColorConverterView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "Color Converter", icon: "paintpalette.fill")
-            // ── Input Bar ──
-            HStack(spacing: 12) {
-                Image(systemName: "paintpalette.fill")
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundStyle(t.accent)
-
+            ToolHeader(title: "Color Converter", icon: "paintpalette.fill") {
                 TextField("#FF5733, rgb(255,87,51), hsl(11,100%,60%)", text: $vm.input)
                     .textFieldStyle(.plain)
-                    .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
                     .foregroundStyle(t.text)
                     .onSubmit { vm.convert() }
                     .onChange(of: vm.input) { _, _ in
@@ -26,18 +20,12 @@ struct ColorConverterView: View {
                 if let r = vm.result {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(r.color)
-                        .frame(width: 36, height: 28)
+                        .frame(width: 28, height: 20)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.15), lineWidth: 1))
-                        .shadow(color: r.color.opacity(0.4), radius: 8, y: 2)
                 }
 
                 DXButton(title: "Convert", icon: "paintpalette.fill") { vm.convert() }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(.ultraThinMaterial.opacity(0.3))
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
 
             if let error = vm.errorMessage {
                 VStack {

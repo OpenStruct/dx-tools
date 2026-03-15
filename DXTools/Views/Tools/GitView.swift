@@ -6,9 +6,7 @@ struct GitView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "Git Stats", icon: "arrow.triangle.branch")
-            // Path bar
-            HStack(spacing: 12) {
+            ToolHeader(title: "Git Stats", icon: "arrow.triangle.branch") {
                 Image(systemName: "folder.fill").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
                 TextField("Repository path…", text: $vm.repoPath)
                     .textFieldStyle(.plain).font(.system(size: 12, weight: .medium, design: .monospaced))
@@ -17,9 +15,7 @@ struct GitView: View {
                 SmallIconButton(title: "Browse", icon: "folder") { vm.browse() }
                 SmallIconButton(title: "Refresh", icon: "arrow.clockwise") { vm.refresh() }
             }
-            .padding(.horizontal, 16).padding(.vertical, 10)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             if let info = vm.repoInfo {
                 ScrollView {

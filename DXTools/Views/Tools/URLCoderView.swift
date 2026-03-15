@@ -6,9 +6,7 @@ struct URLCoderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "URL Encoder", icon: "link")
-            // Toolbar
-            EditorPaneHeader(title: "URL Encoder / Decoder", icon: "link") {
+            ToolHeader(title: "URL Encoder / Decoder", icon: "link") {
                 HStack(spacing: 1) {
                     ForEach(URLCoderViewModel.Mode.allCases, id: \.self) { mode in
                         Button {

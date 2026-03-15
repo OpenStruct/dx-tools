@@ -7,9 +7,7 @@ struct SSHKeyView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "SSH Key Generator", icon: "key.horizontal.fill")
-            // Controls
-            HStack(spacing: 16) {
+            ToolHeader(title: "SSH Key Generator", icon: "key.horizontal.fill") {
                 HStack(spacing: 6) {
                     Text("Type").font(.system(size: 10, weight: .bold)).foregroundStyle(t.textTertiary)
                     Picker("", selection: $vm.keyType) {
@@ -36,9 +34,7 @@ struct SSHKeyView: View {
                 }
                 .disabled(vm.isGenerating)
             }
-            .padding(.horizontal, 16).padding(.vertical, 12)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             if let kp = vm.keyPair {
                 ScrollView {

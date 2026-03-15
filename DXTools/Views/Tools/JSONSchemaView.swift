@@ -7,9 +7,7 @@ struct JSONSchemaView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "JSON Schema", icon: "checkmark.shield.fill")
-            // Toolbar
-            HStack(spacing: 8) {
+            ToolHeader(title: "JSON Schema", icon: "checkmark.shield.fill") {
                 if let r = vm.result {
                     HStack(spacing: 6) {
                         Image(systemName: r.isValid ? "checkmark.circle.fill" : "xmark.circle.fill")
@@ -23,9 +21,7 @@ struct JSONSchemaView: View {
                 SmallIconButton(title: "Sample", icon: "doc.text") { vm.sample() }
                 DXButton(title: "Validate", icon: "checkmark.shield") { vm.validate() }
             }
-            .padding(.horizontal, 16).padding(.vertical, 10)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             HSplitView {
                 // JSON input

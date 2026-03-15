@@ -12,9 +12,7 @@ struct HTTPStatusView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "HTTP Status Codes", icon: "number.circle.fill")
-            // Search bar
-            HStack(spacing: 12) {
+            ToolHeader(title: "HTTP Status Codes", icon: "number.circle.fill") {
                 Image(systemName: "magnifyingglass").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
                 TextField("Search by code, name, or description…", text: $searchQuery)
                     .textFieldStyle(.plain)
@@ -24,9 +22,7 @@ struct HTTPStatusView: View {
                     SmallIconButton(title: "", icon: "xmark.circle.fill") { searchQuery = "" }
                 }
             }
-            .padding(.horizontal, 16).padding(.vertical, 10)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             HSplitView {
                 // List

@@ -7,9 +7,7 @@ struct PasswordGeneratorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "Password Generator", icon: "lock.shield.fill")
-            // ── Toolbar ──
-            EditorPaneHeader(title: "Password Generator", icon: "lock.shield.fill") {
+            ToolHeader(title: "Password Generator", icon: "lock.shield.fill") {
                 HStack(spacing: 1) {
                     modeButton("Password", isActive: !vm.isPhrase) { vm.isPhrase = false; vm.generate() }
                     modeButton("Passphrase", isActive: vm.isPhrase) { vm.isPhrase = true; vm.generate() }
@@ -26,7 +24,6 @@ struct PasswordGeneratorView: View {
 
                 DXButton(title: "Generate", icon: "arrow.clockwise") { vm.generate() }
             }
-            Rectangle().fill(t.border).frame(height: 1)
 
             // ── Controls ──
             HStack(spacing: 20) {

@@ -7,9 +7,7 @@ struct DockerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "Docker", icon: "shippingbox.fill")
-            // Toolbar
-            HStack(spacing: 12) {
+            ToolHeader(title: "Docker", icon: "shippingbox.fill") {
                 Image(systemName: "shippingbox.fill").font(.system(size: 10, weight: .bold)).foregroundStyle(t.accent)
                 TextField("Search containers…", text: $vm.searchQuery)
                     .textFieldStyle(.plain).font(.system(size: 12, weight: .medium))
@@ -22,9 +20,7 @@ struct DockerView: View {
 
                 SmallIconButton(title: "Refresh", icon: "arrow.clockwise") { vm.refresh() }
             }
-            .padding(.horizontal, 16).padding(.vertical, 10)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             if !vm.isDockerAvailable && !vm.isLoading {
                 VStack(spacing: 10) {

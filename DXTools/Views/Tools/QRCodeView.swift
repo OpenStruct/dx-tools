@@ -7,8 +7,7 @@ struct QRCodeView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolHeader(title: "QR Code Generator", icon: "qrcode")
-            HStack(spacing: 12) {
+            ToolHeader(title: "QR Code Generator", icon: "qrcode") {
                 Picker("Error Correction", selection: $vm.correctionLevel) {
                     ForEach(QRCodeService.CorrectionLevel.allCases, id: \.self) { level in
                         Text(level.label).tag(level)
@@ -30,9 +29,7 @@ struct QRCodeView: View {
                     }
                 }
             }
-            .padding(.horizontal, 16).padding(.vertical, 10)
-            .background(t.glass)
-            Rectangle().fill(t.border).frame(height: 1)
+
 
             HSplitView {
                 // Input
