@@ -34,6 +34,11 @@ struct ToolRouter: View {
             case .docker: DockerView()
             case .gitStats: GitView()
             case .timestampConverter: TimestampView()
+            case .qrCode: QRCodeView()
+            case .imageBase64: ImageBase64View()
+            case .sqlFormatter: SQLFormatterView()
+            case .jsonSchema: JSONSchemaView()
+            case .httpStatus: HTTPStatusView()
             }
         }
         .id(tool) // Force view recreation on tool switch
