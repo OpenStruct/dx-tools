@@ -60,10 +60,20 @@ struct SettingsView: View {
                     .shadow(color: .black.opacity(0.3), radius: 10, y: 4)
                 Text("DX Tools").font(.title2).fontWeight(.bold)
                 Text("Developer Experience Toolkit").foregroundStyle(.secondary)
-                Text("Version 2.0.0").font(.caption).foregroundStyle(.tertiary)
+                Text("Version \(UpdateService.currentVersion)").font(.caption).foregroundStyle(.tertiary)
                 Divider().frame(width: 200)
                 Text("\(Tool.allCases.count) tools · Built with SwiftUI").font(.caption).foregroundStyle(.tertiary)
-                Text("© 2024 OpenStruct").font(.caption2).foregroundStyle(.quaternary)
+                Text("© 2025 OpenStruct").font(.caption2).foregroundStyle(.quaternary)
+
+                Button("Check for Updates") {
+                    appState.checkForUpdate()
+                    if appState.availableUpdate == nil {
+                        appState.showToast("You're up to date!", icon: "checkmark.circle")
+                    }
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+
                 Spacer()
             }
             .frame(maxWidth: .infinity)

@@ -71,6 +71,10 @@ class AppState {
         Tool.allCases.filter { favorites.contains($0.rawValue) }
     }
 
+    // Update
+    var availableUpdate: UpdateService.Release?
+    var showUpdateAlert: Bool = false
+
     // Dropped file content to pass to tool
     var pendingDropContent: String?
 
@@ -126,6 +130,17 @@ class AppState {
             let tab = DXTab(title: "Tab 1", tool: tool)
             tabs[tool] = [tab]
             selectedTabId[tool] = tab.id
+        }
+    }
+
+    func checkForUpdate() {
+        Task {
+            if let release = await UpdateService.checkForUpdate() {
+                await MainActor.run {
+                    self.availableUpdate = release
+                    self.showUpdateAlert = true
+                }
+            }
         }
     }
 

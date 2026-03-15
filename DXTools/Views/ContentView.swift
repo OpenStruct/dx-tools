@@ -112,6 +112,21 @@ struct ContentView: View {
         .onReceive(clipboardTimer) { _ in
             appState.checkClipboard()
         }
+        .onAppear {
+            appState.checkForUpdate()
+        }
+        .alert("Update Available", isPresented: $state.showUpdateAlert) {
+            Button("Download") {
+                if let url = URL(string: appState.availableUpdate?.url ?? "") {
+                    NSWorkspace.shared.open(url)
+                }
+            }
+            Button("Later", role: .cancel) {}
+        } message: {
+            if let update = appState.availableUpdate {
+                Text("DX Tools v\(update.version) is available. You're on v\(UpdateService.currentVersion).")
+            }
+        }
     }
 
     private func handleDrop(_ providers: [NSItemProvider]) {

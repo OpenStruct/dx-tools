@@ -26,6 +26,12 @@ struct DXToolsApp: App {
                 .keyboardShortcut("t", modifiers: .command)
             }
 
+            CommandGroup(after: .appInfo) {
+                Button("Check for Updates…") {
+                    appState.checkForUpdate()
+                }
+            }
+
             CommandGroup(after: .toolbar) {
                 Button("Command Palette") {
                     appState.showCommandPalette.toggle()
