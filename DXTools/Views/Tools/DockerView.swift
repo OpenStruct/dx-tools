@@ -26,8 +26,8 @@ struct DockerView: View {
                 VStack(spacing: 10) {
                     Spacer()
                     Image(systemName: "shippingbox").font(.system(size: 30, weight: .ultraLight)).foregroundStyle(t.textGhost)
-                    Text("Docker not running").font(.system(size: 12, weight: .semibold, design: .rounded)).foregroundStyle(t.textTertiary)
-                    Text("Start Docker Desktop and refresh").font(.system(size: 10, weight: .medium)).foregroundStyle(t.textGhost)
+                    Text("No container runtime found").font(.system(size: 12, weight: .semibold, design: .rounded)).foregroundStyle(t.textTertiary)
+                    Text("Install Docker, Podman, or OrbStack and refresh").font(.system(size: 10, weight: .medium)).foregroundStyle(t.textGhost)
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
