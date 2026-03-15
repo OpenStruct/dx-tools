@@ -131,28 +131,42 @@ jobs:
         id: version
         run: echo "version=$(grep 'MARKETING_VERSION' project.yml | head -1 | awk '{print $2}' | tr -d '\"')" >> $GITHUB_OUTPUT
 
+      - name: Generate release notes
+        id: notes
+        run: |
+          # Get commits since last tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$PREV_TAG" ]; then
+            CHANGES=$(git log "$PREV_TAG"..HEAD --pretty=format:"- %s" --no-merges | grep -v "^- chore:" | grep -v "^- Merge" | head -20)
+          else
+            CHANGES="- Initial release"
+          fi
+
+          # Write to file for multiline support
+          cat > build/release-notes.md << 'HEADER'
+          ## DX Tools v${{ steps.version.outputs.version }}
+
+          ### Downloads
+          - **DXTools.dmg** — macOS app (drag to Applications)
+          - **dx** — CLI binary (copy to `~/bin/` or `/usr/local/bin/`)
+
+          ### Install via Homebrew
+          ```
+          brew tap openstruct/tap && brew install dx-tools
+          ```
+
+          ### Changes
+          HEADER
+
+          echo "$CHANGES" >> build/release-notes.md
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: DX Tools v${{ steps.version.outputs.version }}
           make_latest: true
-          body: |
-            ## DX Tools v${{ steps.version.outputs.version }}
-
-            ### Downloads
-            - **DXTools.dmg** — macOS app (drag to Applications)
-            - **dx** — CLI binary (copy to `~/bin/` or `/usr/local/bin/`)
-
-            ### Install via Homebrew
-            ```
-            brew tap openstruct/tap && brew install dx-tools
-            ```
-
-            ### What's Included
-            - 33 developer tools in one native macOS app
-            - CLI with 10 subcommands: json, jwt, epoch, env, hash, base64, uuid, color, pass, port
-            - 300 tests, zero dependencies, ~3 MB
+          body_path: build/release-notes.md
           files: |
             build/DXTools.dmg
             .build/release/dx
