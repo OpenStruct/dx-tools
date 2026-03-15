@@ -9,6 +9,7 @@ class DockerViewModel {
     var logs: String = ""
     var isDockerAvailable: Bool = false
     var isLoading: Bool = false
+    var runtimeName: String = "Docker"
 
     var filtered: [DockerService.Container] {
         if searchQuery.isEmpty { return containers }
@@ -23,9 +24,11 @@ class DockerViewModel {
     func refresh() {
         isLoading = true
         DispatchQueue.global(qos: .userInitiated).async { [self] in
+            let name = DockerService.detectedRuntimeName
             let available = DockerService.isDockerRunning()
             let list = available ? DockerService.listContainers(all: showAll) : []
             DispatchQueue.main.async {
+                self.runtimeName = name
                 self.isDockerAvailable = available
                 self.containers = list
                 self.isLoading = false
