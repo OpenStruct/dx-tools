@@ -32,7 +32,9 @@ final class NetworkServiceTests: XCTestCase {
     }
 
     func testDNSLookupInvalid() throws {
-        try XCTSkipIf(ProcessInfo.processInfo.environment["CI"] != nil, "Skipped in CI — no dig access")
+        // dig on a known domain to check if DNS works in this environment
+        let probe = NetworkService.dnsLookup(domain: "google.com")
+        try XCTSkipIf(probe.records.isEmpty, "Skipped — DNS not available (likely CI sandbox)")
         let result = NetworkService.dnsLookup(domain: "thisdoesnotexist12345.invalid")
         XCTAssertTrue(result.records.isEmpty)
     }
