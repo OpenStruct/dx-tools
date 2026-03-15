@@ -1,33 +1,21 @@
 class DxTools < Formula
-  desc "⚡ Developer Experience Toolkit - 17 tools in one native macOS app"
-  homepage "https://github.com/OpenStruct/dx-tools"
+  desc "23 developer tools in one CLI — JSON, JWT, ports, hashing, base64, UUID & more"
+  homepage "https://openstruct.github.io/dx-tools/"
   url "https://github.com/OpenStruct/dx-tools/archive/refs/tags/v2.0.0.tar.gz"
-  sha256 "PLACEHOLDER"
+  sha256 ""  # Updated on release
   license "MIT"
+  head "https://github.com/OpenStruct/dx-tools.git", branch: "main"
 
   depends_on xcode: ["15.0", :build]
   depends_on :macos
 
   def install
-    # Install CLI tool
     system "swift", "build", "-c", "release", "--disable-sandbox"
     bin.install ".build/release/dx"
-
-    # Build macOS app
-    system "xcodegen", "generate"
-    system "xcodebuild", "-project", "DXTools.xcodeproj",
-           "-scheme", "DXTools",
-           "-configuration", "Release",
-           "-derivedDataPath", "build",
-           "CODE_SIGN_IDENTITY=",
-           "CODE_SIGNING_REQUIRED=NO",
-           "CODE_SIGNING_ALLOWED=NO"
-
-    app_path = Dir["build/Build/Products/Release/*.app"].first
-    prefix.install app_path if app_path
   end
 
   test do
-    assert_match "dx", shell_output("#{bin}/dx --version")
+    assert_match "dx", shell_output("#{bin}/dx --help")
+    assert_match(/[0-9a-f]{8}-/, shell_output("#{bin}/dx uuid"))
   end
 end
