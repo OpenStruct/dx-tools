@@ -86,12 +86,29 @@ jobs:
             -derivedDataPath build/DerivedData \
             build
 
+      - name: Build .icns from asset catalog
+        run: |
+          ICONSET="build/AppIcon.iconset"
+          mkdir -p "$ICONSET"
+          SRC="DXTools/Assets.xcassets/AppIcon.appiconset"
+          for f in icon_16x16.png icon_16x16@2x.png icon_32x32.png icon_32x32@2x.png \
+                   icon_128x128.png icon_128x128@2x.png icon_256x256.png icon_256x256@2x.png \
+                   icon_512x512.png icon_512x512@2x.png; do
+            cp "$SRC/$f" "$ICONSET/$f"
+          done
+          iconutil --convert icns "$ICONSET" --output build/AppIcon.icns
+
       - name: Package DMG
         run: |
           APP_PATH="build/DerivedData/Build/Products/Release/DX Tools.app"
           mkdir -p build/dmg-staging
           cp -R "$APP_PATH" build/dmg-staging/
           ln -s /Applications build/dmg-staging/Applications
+
+          # Set volume icon
+          cp build/AppIcon.icns build/dmg-staging/.VolumeIcon.icns
+          SetFile -a C build/dmg-staging 2>/dev/null || true
+
           hdiutil create -volname "DX Tools" \
             -srcfolder build/dmg-staging \
             -ov -format UDZO \
@@ -121,9 +138,9 @@ jobs:
             ```
 
             ### What's Included
-            - 23 developer tools in one native macOS app
+            - 33 developer tools in one native macOS app
             - CLI with 10 subcommands: json, jwt, epoch, env, hash, base64, uuid, color, pass, port
-            - 245 tests, zero dependencies, 2.3 MB
+            - 300 tests, zero dependencies, ~3 MB
           files: |
             build/DXTools.dmg
             .build/release/dx
