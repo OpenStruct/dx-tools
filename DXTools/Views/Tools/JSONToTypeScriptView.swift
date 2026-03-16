@@ -35,12 +35,11 @@ struct JSONToTypeScriptView: View {
                             .frame(width: 80)
                     }
 
-                    Picker("", selection: $vm.useInterface) {
-                        Text("interface").tag(true)
-                        Text("type").tag(false)
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 150)
+                    ThemedPicker(
+                        selection: $vm.useInterface,
+                        options: [true, false],
+                        label: { $0 ? "interface" : "type" }
+                    )
 
                     Toggle("readonly", isOn: $vm.readOnly)
                         .toggleStyle(.checkbox)

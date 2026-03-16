@@ -30,13 +30,11 @@ struct CurlToCodeView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    Picker("", selection: $vm.selectedLanguage) {
-                        ForEach(CurlToCodeViewModel.Language.allCases, id: \.self) { lang in
-                            Text(lang.rawValue).tag(lang)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(maxWidth: 400)
+                    ThemedPicker(
+                        selection: $vm.selectedLanguage,
+                        options: CurlToCodeViewModel.Language.allCases,
+                        label: { $0.rawValue }
+                    )
 
                     Spacer()
 

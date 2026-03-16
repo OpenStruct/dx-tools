@@ -10,13 +10,11 @@ struct SSHKeyView: View {
             ToolHeader(title: "SSH Key Generator", icon: "key.horizontal.fill") {
                 HStack(spacing: 6) {
                     Text("Type").font(.system(size: 10, weight: .bold)).foregroundStyle(t.textTertiary)
-                    Picker("", selection: $vm.keyType) {
-                        ForEach(SSHKeyService.KeyType.allCases, id: \.self) { type in
-                            Text(type.rawValue).tag(type)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 240)
+                    ThemedPicker(
+                        selection: $vm.keyType,
+                        options: SSHKeyService.KeyType.allCases,
+                        label: { $0.rawValue }
+                    )
                 }
 
                 HStack(spacing: 6) {

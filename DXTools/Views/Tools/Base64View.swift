@@ -30,12 +30,11 @@ struct Base64View: View {
             },
             inputFooter: {
                 HStack(spacing: 12) {
-                    Picker("", selection: $vm.isEncoding) {
-                        Text("Encode").tag(true)
-                        Text("Decode").tag(false)
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 160)
+                    ThemedPicker(
+                        selection: $vm.isEncoding,
+                        options: [true, false],
+                        label: { $0 ? "Encode" : "Decode" }
+                    )
 
                     Toggle("URL-safe", isOn: $vm.urlSafe)
                         .toggleStyle(.checkbox)

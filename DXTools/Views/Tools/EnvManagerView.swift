@@ -8,13 +8,11 @@ struct EnvManagerView: View {
             ToolHeader(title: "Env Manager", icon: "doc.text.magnifyingglass")
             // Mode picker
             HStack(spacing: 16) {
-                Picker("", selection: $vm.mode) {
-                    ForEach(EnvViewModel.Mode.allCases, id: \.self) { mode in
-                        Text(mode.rawValue).tag(mode)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 160)
+                ThemedPicker(
+                    selection: $vm.mode,
+                    options: EnvViewModel.Mode.allCases,
+                    label: { $0.rawValue }
+                )
 
                 Spacer()
 

@@ -11,13 +11,11 @@ struct QRCodeView: View {
                 Text("Correction")
                     .font(.system(size: 10, weight: .bold))
                     .foregroundStyle(t.textTertiary)
-                Picker("", selection: $vm.correctionLevel) {
-                    ForEach(QRCodeService.CorrectionLevel.allCases, id: \.self) { level in
-                        Text(level.rawValue).tag(level)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 140)
+                ThemedPicker(
+                    selection: $vm.correctionLevel,
+                    options: QRCodeService.CorrectionLevel.allCases,
+                    label: { $0.rawValue }
+                )
                 .onChange(of: vm.correctionLevel) { _, _ in vm.generate() }
 
                 Spacer()

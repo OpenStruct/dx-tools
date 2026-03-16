@@ -17,13 +17,11 @@ struct SQLFormatterView: View {
                     EditorPaneHeader(title: "SQL INPUT", icon: "text.cursor") {}
                     Spacer()
 
-                    Picker("", selection: $vm.indent) {
-                        ForEach(SQLFormatterService.IndentStyle.allCases, id: \.self) { style in
-                            Text(style.rawValue).tag(style)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 160)
+                    ThemedPicker(
+                        selection: $vm.indent,
+                        options: SQLFormatterService.IndentStyle.allCases,
+                        label: { $0.rawValue }
+                    )
 
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.sample() }
                     DXButton(title: "Format", icon: "text.alignleft") { vm.format() }
