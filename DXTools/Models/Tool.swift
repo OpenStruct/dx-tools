@@ -54,6 +54,16 @@ enum Tool: String, CaseIterable, Identifiable {
     case sqlFormatter = "SQL Formatter"
     case jsonSchema = "JSON Schema"
     case httpStatus = "HTTP Status Codes"
+    case nginxConfig = "Nginx Config"
+    case k8sGenerator = "K8s YAML"
+    case envSwitcher = "Env Switcher"
+    case errorTracker = "Error Tracker"
+    case iconGenerator = "Icon Generator"
+    case databaseGUI = "Database"
+    case webhookTester = "Webhook Tester"
+    case httpProxy = "HTTP Proxy"
+    case screenshotTool = "Screenshot"
+    case apiClient = "API Client"
 
     var id: String { rawValue }
 
@@ -92,6 +102,16 @@ enum Tool: String, CaseIterable, Identifiable {
         case .sqlFormatter: return "tablecells"
         case .jsonSchema: return "checkmark.shield"
         case .httpStatus: return "number.circle"
+        case .nginxConfig: return "server.rack"
+        case .k8sGenerator: return "square.3.layers.3d"
+        case .envSwitcher: return "arrow.triangle.swap"
+        case .errorTracker: return "exclamationmark.triangle.fill"
+        case .iconGenerator: return "app.dashed"
+        case .databaseGUI: return "cylinder.split.1x2"
+        case .webhookTester: return "antenna.radiowaves.left.and.right"
+        case .httpProxy: return "arrow.left.arrow.right.circle"
+        case .screenshotTool: return "camera.viewfinder"
+        case .apiClient: return "paperplane.fill"
         }
     }
 
@@ -113,6 +133,16 @@ enum Tool: String, CaseIterable, Identifiable {
         case .sqlFormatter: return .text
         case .jsonSchema: return .json
         case .httpStatus: return .devops
+        case .nginxConfig: return .devops
+        case .k8sGenerator: return .devops
+        case .envSwitcher: return .devops
+        case .errorTracker: return .devops
+        case .iconGenerator: return .generators
+        case .databaseGUI: return .devops
+        case .webhookTester: return .devops
+        case .httpProxy: return .devops
+        case .screenshotTool: return .generators
+        case .apiClient: return .devops
         }
     }
 
@@ -167,6 +197,16 @@ enum Tool: String, CaseIterable, Identifiable {
         case .sqlFormatter: return "sql format query beautify minify database"
         case .jsonSchema: return "json schema validate validation draft"
         case .httpStatus: return "http status code 200 404 500 rest api response"
+        case .nginxConfig: return "nginx config reverse proxy ssl static site load balancer server"
+        case .k8sGenerator: return "kubernetes k8s yaml manifest deployment service ingress pod container"
+        case .envSwitcher: return "env environment switcher dotenv profile configuration"
+        case .errorTracker: return "error tracker log parser stack trace debug crash"
+        case .iconGenerator: return "icon generator app ios macos android favicon resize"
+        case .databaseGUI: return "database sql sqlite query table browse client"
+        case .webhookTester: return "webhook tester requestbin http receiver callback"
+        case .httpProxy: return "http proxy interceptor traffic capture charles"
+        case .screenshotTool: return "screenshot capture annotate screen region"
+        case .apiClient: return "api client postman rest http collection environment"
         }
     }
 }

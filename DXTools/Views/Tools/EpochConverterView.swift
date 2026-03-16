@@ -10,13 +10,11 @@ struct EpochConverterView: View {
             ToolHeader(title: "Epoch Converter", icon: "clock.fill")
             // Mode picker
             HStack(spacing: 16) {
-                Picker("", selection: $vm.mode) {
-                    ForEach(EpochViewModel.Mode.allCases, id: \.self) { mode in
-                        Text(mode.rawValue).tag(mode)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 320)
+                ThemedPicker(
+                    selection: $vm.mode,
+                    options: EpochViewModel.Mode.allCases,
+                    label: { $0.rawValue }
+                )
 
                 Spacer()
 

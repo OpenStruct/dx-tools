@@ -9,22 +9,18 @@ struct ImageBase64View: View {
         VStack(spacing: 0) {
             // Single unified header
             ToolHeader(title: "Image Base64", icon: "photo.fill") {
-                Picker("", selection: $vm.mode) {
-                    ForEach(ImageBase64ViewModel.Mode.allCases, id: \.self) { m in
-                        Text(m.rawValue).tag(m)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 240)
+                ThemedPicker(
+                    selection: $vm.mode,
+                    options: ImageBase64ViewModel.Mode.allCases,
+                    label: { $0.rawValue }
+                )
 
                 if vm.mode == .encode {
-                    Picker("", selection: $vm.format) {
-                        ForEach(ImageBase64Service.ImageFormat.allCases, id: \.self) { f in
-                            Text(f.rawValue).tag(f)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 110)
+                    ThemedPicker(
+                        selection: $vm.format,
+                        options: ImageBase64Service.ImageFormat.allCases,
+                        label: { $0.rawValue }
+                    )
 
                     Spacer()
 

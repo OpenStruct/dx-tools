@@ -16,13 +16,13 @@ struct SQLFormatterView: View {
                 HStack(spacing: 8) {
                     EditorPaneHeader(title: "SQL INPUT", icon: "text.cursor") {}
                     Spacer()
-                    Picker("Indent", selection: $vm.indent) {
-                        ForEach(SQLFormatterService.IndentStyle.allCases, id: \.self) { style in
-                            Text(style.rawValue).tag(style)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(width: 200)
+
+                    ThemedPicker(
+                        selection: $vm.indent,
+                        options: SQLFormatterService.IndentStyle.allCases,
+                        label: { $0.rawValue }
+                    )
+
                     SmallIconButton(title: "Sample", icon: "doc.text") { vm.sample() }
                     DXButton(title: "Format", icon: "text.alignleft") { vm.format() }
                     DXButton(title: "Minify", icon: "arrow.right.arrow.left", style: .secondary) { vm.minify() }
@@ -31,7 +31,7 @@ struct SQLFormatterView: View {
             },
             outputHeader: {
                 HStack(spacing: 8) {
-                    EditorPaneHeader(title: "FORMATTED", icon: "checkmark.circle") {}
+                    EditorPaneHeader(title: "OUTPUT", icon: "checkmark.circle") {}
                     Spacer()
                     if !vm.output.isEmpty {
                         SmallIconButton(title: "Copy", icon: "doc.on.doc") {
@@ -43,6 +43,8 @@ struct SQLFormatterView: View {
                 .padding(.trailing, 8)
             }
         )
-        .onChange(of: vm.indent) { _, _ in vm.format() }
+        .onChange(of: vm.indent) { _, _ in
+            if !vm.output.isEmpty { vm.format() }
+        }
     }
 }
