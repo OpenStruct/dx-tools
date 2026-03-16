@@ -15,10 +15,11 @@ class DatabaseViewModel {
 
     func connectFile() {
         let panel = NSOpenPanel()
-        panel.allowedContentTypes = [.database]
+        panel.allowedContentTypes = [.data]
         panel.allowsMultipleSelection = false
-        // Also allow by extension
         panel.allowsOtherFileTypes = true
+        panel.allowedFileTypes = ["db", "sqlite", "sqlite3", "sqlitedb"]
+        panel.message = "Select a SQLite database file (.db, .sqlite, .sqlite3)"
         if panel.runModal() == .OK, let url = panel.url {
             connectTo(url.path, name: url.lastPathComponent)
         }
