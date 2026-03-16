@@ -39,6 +39,16 @@ struct ToolRouter: View {
             case .sqlFormatter: SQLFormatterView()
             case .jsonSchema: JSONSchemaView()
             case .httpStatus: HTTPStatusView()
+            case .nginxConfig: NginxConfigView()
+            case .k8sGenerator: K8sView()
+            case .envSwitcher: EnvSwitcherView()
+            case .errorTracker: ErrorTrackerView()
+            case .iconGenerator: IconGeneratorView()
+            case .databaseGUI: DatabaseView()
+            case .webhookTester: WebhookView()
+            case .httpProxy: HTTPProxyView()
+            case .screenshotTool: ScreenshotView()
+            case .apiClient: APIClientView()
             }
         }
         .id(tool) // Force view recreation on tool switch
