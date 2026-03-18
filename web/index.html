@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DX Tools — Developer Experience Toolkit for macOS</title>
-<meta name="description" content="23 developer tools in one native macOS app. JSON, JWT, ports, DNS, regex, colors, hashing — all offline, instant, keyboard-first.">
+<meta name="description" content="43 developer tools in one native macOS app. JSON, JWT, SSH, Docker, regex, colors, hashing — all offline, instant, keyboard-first.">
 <meta property="og:title" content="DX Tools — Developer Toolkit for macOS">
-<meta property="og:description" content="23 developer tools in one native macOS app. Zero dependencies, 2.3MB, keyboard-first.">
+<meta property="og:description" content="43 developer tools in one native macOS app. Zero dependencies, keyboard-first.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://openstruct.github.io/dx-tools/">
 <style>
@@ -220,9 +220,9 @@ footer .f-links a{color:var(--text2)}
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-badge"><span class="pulse"></span><span id="hero-version">v2.2.0</span> — 33 tools, native macOS</div>
+  <div class="hero-badge"><span class="pulse"></span><span id="hero-version">v3.1.0</span> — 43 tools, native macOS</div>
   <h1><span class="gradient">DX</span><span class="thin"> Tools</span></h1>
-  <p class="hero-sub">33 developer tools in one native macOS app. JSON formatting, JWT decoding, port killing, QR codes, SQL formatting, API testing — all offline, instant, keyboard-first.</p>
+  <p class="hero-sub">43 developer tools in one native macOS app. JSON formatting, JWT decoding, SSH management, Docker, API testing, database GUI — all offline, instant, keyboard-first.</p>
   <div class="hero-actions">
     <a href="https://github.com/OpenStruct/dx-tools/releases/latest" class="btn-primary" id="dl-btn-main">⬇ Download DMG <span class="sm" id="dl-size">2.3 MB</span></a>
     <a href="#install" class="btn-secondary"><code>brew tap openstruct/tap && brew install dx-tools</code></a>
@@ -231,7 +231,7 @@ footer .f-links a{color:var(--text2)}
     <span class="tag"><span class="dot" style="background:var(--green)"></span> macOS 14+</span>
     <span class="tag"><span class="dot" style="background:var(--blue)"></span> Universal Binary</span>
     <span class="tag"><span class="dot" style="background:var(--yellow)"></span> Zero Dependencies</span>
-    <span class="tag"><span class="dot" style="background:var(--purple)"></span> 300 Tests</span>
+    <span class="tag"><span class="dot" style="background:var(--purple)"></span> 434 Tests</span>
   </div>
 </section>
 
@@ -329,7 +329,7 @@ footer .f-links a{color:var(--text2)}
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🛡</span></div><h3>Unix Permissions</h3></div><p>chmod calculator. Numeric ↔ symbolic. Interactive checkboxes. Setuid/setgid/sticky bit.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>⏰</span></div><h3>Cron Parser</h3></div><p>Human-readable descriptions. Next 10 run times. Field breakdown. Click-to-try examples.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>📱</span></div><h3>QR Code Generator</h3></div><p>Generate QR codes from text or URLs. 4 error correction levels. Copy or save as PNG.</p><span class="card-tag">Generator</span></div>
-    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🔑</span></div><h3>SSH Key Generator</h3></div><p>Generate RSA, Ed25519, ECDSA keys. Custom comments. Copy or export public/private keys.</p><span class="card-tag">Generator</span></div>
+    <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🔑</span></div><h3>SSH Manager</h3></div><p>Full SSH key management — scan, generate, import, rename, delete keys. Edit ~/.ssh/config, manage known hosts, control ssh-agent. Key age warnings, permission fixes, host linking.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-gen"><div class="card-head"><div class="card-icon"><span>🕐</span></div><h3>Timestamp Converter</h3></div><p>Unix ↔ ISO 8601 ↔ RFC 2822. Timezone support. Batch conversion.</p><span class="card-tag">Generator</span></div>
     <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🔌</span></div><h3>Port Manager</h3></div><p>See every listening port. Kill processes instantly. Common dev port monitoring. Search & sort.</p><span class="card-tag">DevOps</span></div>
     <div class="tool-card cat-devops"><div class="card-head"><div class="card-icon"><span>🌐</span></div><h3>Network Info & DNS</h3></div><p>Local/public IP, interfaces, DNS servers. Full DNS lookup — A, AAAA, CNAME, MX, NS, TXT records.</p><span class="card-tag">DevOps</span></div>
